@@ -1,120 +1,107 @@
 import React, { useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { toast } from "react-hot-toast";
-
 import { useNavigate } from "react-router-dom";
-const AddLaptop = () => {
+
+const AddProduct = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    brand: "",
-    model: "",
-    serialNumber: "",
-    purchaseDate: "",
+    name: "",
+    description: "",
+    price: "",
+    stock_quantity: "",
   });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosInstance.post("/laptop/add-laptop", formData);
+      const res = await axiosInstance.post("/products/create-product", formData);
       if (res) {
-        toast.success("Laptop added successfully");
+        toast.success("Product added successfully");
+        
       }
     } catch (e) {
       toast.error("Error while adding laptop");
     }
   };
+
   return (
-    <>
-
-      <div className="flex flex-col justify-center items-center">
-        <div className="hero bg-base-200 min-h-screen">
-          <div className="hero-content flex-col lg:flex-row-reverse">
-            {/* id */}
-            <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-              <form className="card-body" onSubmit={(e) => handleSubmit(e)}>
-                {/* brand */}
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Brand</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Brand"
-                    className="input input-bordered"
-                    required
-                    onChange={(e) =>
-                      setFormData({ ...formData, brand: e.target.value })
-                    }
-                  />
-                </div>
-                {/* model */}
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">model</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="model"
-                    className="input input-bordered"
-                    required
-                    onChange={(e) =>
-                      setFormData({ ...formData, model: e.target.value })
-                    }
-                  />
-                </div>
-
-                {/* serial Number */}
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Serial Number</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="ex.123e123"
-                    className="input input-bordered"
-                    required
-                    onChange={(e) =>
-                      setFormData({ ...formData, serialNumber: e.target.value })
-                    }
-                  />
-                </div>
-
-                {/* purchaseDate */}
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Purchase Date</span>
-                  </label>
-                  <input
-                    type="date"
-                    className="input input-bordered"
-                    required
-                    onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        purchaseDate: e.target.value,
-                      });
-                    }}
-                  />
-                </div>
-                <div className="form-control mt-6">
-                  <button className="btn btn-primary" type="submit">
-                    Add Laptop
-                  </button>
-                </div>
-              </form>
-              <div className=" flex justify-center items-center">
-                <button
-                  className="btn btn-success"
-                  onClick={() => navigate("/manage")}
-                >
-                  Back to Laptop Management
-                </button>
-              </div>
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
+        <h2 className="text-2xl font-bold text-center mb-6">Add New Product</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Name</label>
+            <input
+              type="text"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+              placeholder="Product Name"
+              required
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
           </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Description</label>
+            <input
+              type="text"
+              className="h-20 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+              placeholder="Brief about product"
+              required
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Price</label>
+            <input
+              type="number"
+              min="0"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+              placeholder="$100"
+              required
+              onChange={(e) =>
+                setFormData({ ...formData, price: e.target.value })
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Stock Quantity</label>
+            <input
+              type="number"
+              min="0"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+              required
+              onChange={(e) =>
+                setFormData({ ...formData, stock_quantity: e.target.value })
+              }
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Add Product
+          </button>
+        </form>
+
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={() => navigate("/admin-home")}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            ← Back to Admin Home
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default AddLaptop;
+export default AddProduct;

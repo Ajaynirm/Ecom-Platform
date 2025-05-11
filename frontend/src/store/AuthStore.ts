@@ -2,12 +2,21 @@ import { create } from "zustand";
 import {axiosInstance}  from "../lib/axios.ts";
 import toast from "react-hot-toast";
 
+type product={
+  id:number;
+  name:string;
+  description: string;
+  price: number;
+  stock_quantity: number;
+
+}
 // Define the shape of the auth state
 interface AuthState {
   authUser: any; // You can replace `any` with a proper user type
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
+  currProduct: product | null;
   tab:string;
   setTab: (data:string) => void,
   checkAuth: () => Promise<void>;
@@ -16,11 +25,16 @@ interface AuthState {
   logout: () => void;
 }
 
+
 export const useAuthStore = create<AuthState>((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
   isCheckingAuth: true,
+  currProduct: null,
+  setCurrProduct: (data:product)=>{
+    set({currProduct: data})
+  },
   tab: "products",
   setTab: (tab:string)=>{
     set({tab: tab});

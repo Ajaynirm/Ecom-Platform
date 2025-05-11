@@ -1,5 +1,33 @@
+import { useState,useEffect } from "react";
+import { axiosInstance } from "../../lib/axios";
 
 const OrderManagement: React.FC = () => {
+  const [resData, setResData]=useState(Object);
+  const [order,setOrder]=useState([]);
+  const [page, setPage]=useState(1);
+  const [limit,setLimit]=useState(10);
+  const [totalPages,setTotalPages]=useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchWord,setSearchWord]=useState(" ");
+
+  useEffect(() => {
+    const getAllOrder= async (): Promise<void> =>{
+     try {
+       const response = await axiosInstance.get('/order/list-order',{
+         params: {page,limit}
+       });
+       // const data = await response.json();
+       console.log(response.data);
+       setOrder(response.data.orders)
+       setTotalPages(response.data.totalPages)
+       setResData(response);
+     } catch (error) {
+       console.error('Error fetching products:', error);
+     }
+   }
+   getAllOrder()
+ }, [page]);
+
     return (
       <div>
         <h2 className="text-2xl font-semibold mb-4">Manage Orders</h2>
@@ -42,6 +70,51 @@ const OrderManagement: React.FC = () => {
                 
               </table>
             </div>
+
+      {/* Pagination */}
+      <div className="mt-8 flex justify-center items-center space-x-2">
+        <button
+          onClick={() => {
+            setPage((p) => Math.max(p - 1, 1))
+            setCurrentPage((p)=> Math.max(p-1,1))}}
+          disabled={currentPage === 1}
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        >
+          Prev
+        </button>
+
+        {[...Array(totalPages)].map((_, index) => {
+          const pageNum = index + 1;
+          return (
+            <button
+              key={pageNum}
+              onClick={() => {setPage(pageNum)
+                setCurrentPage(pageNum)
+              }
+                
+              }
+              className={`px-3 py-1 rounded ${
+                pageNum === currentPage
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              {pageNum}
+            </button>
+          );
+        })}
+
+        <button
+          onClick={() => {
+            setPage((p) => Math.min(p + 1, totalPages))
+            setCurrentPage((p)=> Math.min(p+1,totalPages))
+          }}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
       </div>
     );
   };

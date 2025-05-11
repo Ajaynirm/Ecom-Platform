@@ -14,6 +14,9 @@ import AdminHome from "./pages/Admin/AdminHome";
 import PlaceOrder from "./pages/order/PlaceOrder";
 import CancelOrder from "./pages/order/CancelOrder";
 import CartPage from "./pages/order/ShowCart";
+import AddProduct from "./pages/product/AddProduct";
+import EditProduct from "./pages/product/EditProduct";
+import DeleteProduct from "./pages/product/DeleteProduct";
 
 function App() {
   const { checkAuth ,authUser,isCheckingAuth} = useAuthStore();
@@ -39,8 +42,12 @@ function App() {
       <Route path="/" element={ <HomePage />} />
       <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/home" />} />
       <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/home" />} />
-      
+      <Route path="/add-product" element={<AddProduct />} />
       <Route path="/user-cart" element={<CartPage />} />
+
+      <Route path="/update-product" element={<EditProduct />} />
+      <Route path="/delete-product" element={<DeleteProduct />} />
+
       <Route path="/place-order" element={<PlaceOrder />} />
       <Route path="/cancel-order" element={<CancelOrder />} />
       <Route path="/admin-home" element={<AdminHome />} /> 
