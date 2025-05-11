@@ -3,52 +3,56 @@ import pool from "../config/db.js";
 import bcrypt from "bcryptjs";
 
 
-export const signup = async (req, res)  => {
-  const { first_name,last_name , email, password } = req.body;
+export const signup = async (req, res) => {
+  const { first_name, last_name, email, password } = req.body;
+
+  if (!first_name || !last_name || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must be at least 6 characters" });
+  }
 
   try {
-    if (!first_name || !last_name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if (password.length < 6) {
-       return res.status(400).json({ message: "Password must be at least 6 characters" });
-    }
-
-    // Check if user exists
-    const [existingUser] = await pool.promise().query('SELECT * FROM Customers WHERE email = ?', [email]);
+    // 1. Check if email already exists
+    const [existingUser] = await pool.query(
+      'SELECT id FROM Customers WHERE email = ?',
+      [email]
+    );
 
     if (existingUser.length > 0) {
-       return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // 2. Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert new user
-    const [result] = await pool.promise().query(
-      'INSERT INTO Customers (first_name, last_name, email, password_hash) VALUES (?,?, ?, ?)',
+    // 3. Insert new user
+    const [result] = await pool.query(
+      `INSERT INTO Customers (first_name, last_name, email, password_hash, created_at, updated_at)
+       VALUES (?, ?, ?, ?, NOW(), NOW())`,
       [first_name, last_name, email, hashedPassword]
     );
 
-    const newUserId = result.insertId;
+    const userId = result.insertId;
 
-    // Generate JWT
-    generateToken(newUserId, res);
+    // 4. Generate JWT
+    generateToken(userId, res);
 
     return res.status(201).json({
-      _id: newUserId,
+      _id: userId,
       first_name,
       last_name,
       email,
     });
 
-  } catch (error) {
-    console.error("Error in signup controller", error.message);
+  } catch (err) {
+    console.error("Signup error:", err.message);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 export const login = async (req, res) => {
   const { email, password } = req.body;

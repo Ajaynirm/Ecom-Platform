@@ -119,67 +119,26 @@ export const getOneProductDetails = async (req, res) => {
 //GET /api/products?name=mouse&minPrice=100&maxPrice=300
 //GET /api/products?groupBy=stock_quantity
 export const listAllProduct = async (req, res) => {
+  
   try {
     let {
-      page = 1,
-      limit = 10,
-      name,
-      minPrice,
-      maxPrice,
-      groupBy
+      page ,
+      limit,
     } = req.query;
-
-    page = parseInt(page);
-    limit = parseInt(limit);
+    page = parseInt(page)
+    limit= parseInt(limit)
+console.log(page,limit)
     const offset = (page - 1) * limit;
 
     // --- Base query ---
-    let query = `SELECT id, name, description, price, stock_quantity, created_at, updated_at FROM Products`;
-    const conditions = [];
-    const values = [];
-
-    // --- Filters ---
-    if (name) {
-      conditions.push(`name LIKE ?`);
-      values.push(`%${name}%`);
-    }
-
-    if (minPrice) {
-      conditions.push(`price >= ?`);
-      values.push(parseFloat(minPrice));
-    }
-
-    if (maxPrice) {
-      conditions.push(`price <= ?`);
-      values.push(parseFloat(maxPrice));
-    }
-
-    // Add WHERE clause if there are conditions
-    if (conditions.length > 0) {
-      query += ` WHERE ` + conditions.join(" AND ");
-    }
-
-    // --- Optional Grouping ---
-    if (groupBy) {
-      const allowedFields = ['price', 'stock_quantity']; // whitelist fields
-      if (allowedFields.includes(groupBy)) {
-        query += ` GROUP BY ${groupBy}`; 
-      }
-    }
-
-    // --- Sorting and Pagination ---
-    query += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`;
-    values.push(limit, offset);
-
-    const [products] = await pool.query(query, values);
+    let query = `SELECT id, name, description, price, stock_quantity, created_at, updated_at FROM Products LIMIT ? OFFSET ?`;
+    const [products] = await pool.query(query,[limit,offset]);
 
     // Get total count for pagination
     let countQuery = `SELECT COUNT(*) as total FROM Products`;
-    if (conditions.length > 0) {
-      countQuery += ` WHERE ` + conditions.join(" AND ");
-    }
+   
 
-    const [countResult] = await pool.query(countQuery, values.slice(0, -2));
+    const [countResult] = await pool.query(countQuery);
     const total = countResult[0]?.total || 0;
     const totalPages = Math.ceil(total / limit);
 
