@@ -105,13 +105,15 @@ const EditProduct = () => {
             Update Product
           </button>
         </form>
-
+        <div className="mt-4 flex justify-center">
         <button
           onClick={() => navigate("/admin-home")}
-          className="w-full mt-4 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition"
+          className="text-sm text-blue-600 hover:underline"
         >
           Back to Admin Home
         </button>
+        </div>
+       
       </div>
     </div>
   );

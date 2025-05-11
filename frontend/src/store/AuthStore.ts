@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {axiosInstance}  from "../lib/axios.ts";
 import toast from "react-hot-toast";
+import { data } from "react-router-dom";
 
 type product={
   id:number;
@@ -17,8 +18,13 @@ interface AuthState {
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
   currProduct: product | null;
+  currCustomer: object | null,
+  currOrder: object | null,
   tab:string;
   setTab: (data:string) => void,
+  setCurrProduct:(data:object) => void,
+  setCurrCustomer: (data:object)=> void,
+  setCurrOrder: (data:object)=> void,
   checkAuth: () => Promise<void>;
   login: (data:any) => Promise<void>;
   signup: (data:any) => Promise<void>;
@@ -32,8 +38,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoggingIn: false,
   isCheckingAuth: true,
   currProduct: null,
-  setCurrProduct: (data:product)=>{
+  setCurrProduct: (data:any)=>{
     set({currProduct: data})
+  },
+  currCustomer: null,
+  setCurrCustomer: (data: any)=>{
+    set({currCustomer:data});
+  },
+  currOrder: null,
+  setCurrOrder: (data: any)=>{
+    set({currCustomer: data});
   },
   tab: "products",
   setTab: (tab:string)=>{

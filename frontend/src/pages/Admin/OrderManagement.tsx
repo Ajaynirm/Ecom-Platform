@@ -1,9 +1,14 @@
 import { useState,useEffect } from "react";
 import { axiosInstance } from "../../lib/axios";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/AuthStore";
 
 const OrderManagement: React.FC = () => {
+  const navigate = useNavigate();
+  const {setCurrOrder}=useAuthStore();
+
   const [resData, setResData]=useState(Object);
-  const [order,setOrder]=useState([]);
+  const [orders,setOrders]=useState([]);
   const [page, setPage]=useState(1);
   const [limit,setLimit]=useState(10);
   const [totalPages,setTotalPages]=useState(1);
@@ -18,7 +23,7 @@ const OrderManagement: React.FC = () => {
        });
        // const data = await response.json();
        console.log(response.data);
-       setOrder(response.data.orders)
+       setOrders(response.data.orders)
        setTotalPages(response.data.totalPages)
        setResData(response);
      } catch (error) {
@@ -57,16 +62,43 @@ const OrderManagement: React.FC = () => {
                     ))}
                    </tr>
                 </thead>
+               
                 <tbody className="divide-y divide-gray-100 bg-white">
-                <tr className="hover:bg-gray-50 transition">
+            {orders.map((order: any, ind: number) => (
+              <tr key={ind} className="hover:bg-gray-50 transition">
+                <td className="px-4 py-2 text-sm text-center">{ind + 1}</td>
+                <td className="px-4 py-2 text-sm text-center">{order.id}</td>
                 <td className="px-4 py-2 text-sm text-center">
-                  hi
-                  </td>
-                  <td className="px-4 py-2 text-sm text-center">
-                  hi
-                  </td>
-                  </tr>
-                </tbody>
+                  {order.customer_id}
+                </td>
+                <td className="px-2 py-4 text-sm text-center">
+                  {order.total_price}
+                </td>
+                <td className="px-4 py-2 text-sm text-center">
+                  {order.order_status}
+                </td>
+                <td className="px-4 py-2 text-sm text-center">
+                  {order.created_at}
+                </td>
+                <td onClick={()=>{
+                  
+                    navigate("/view-ordered-product")
+                }}>
+                  <button className="bg-blue-600 text-amber-50 p-2 rounded-xl">
+                    view Order
+                  </button>
+                </td>
+                <td onClick={()=>{
+                   setCurrOrder(orders[ind])
+                    navigate("/delete-order")
+                }}>
+                  <button className="bg-red-600 text-amber-50 p-2 rounded-xl">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
                 
               </table>
             </div>

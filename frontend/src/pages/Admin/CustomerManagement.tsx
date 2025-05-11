@@ -1,9 +1,22 @@
 import { useState,useEffect } from "react";
 import { axiosInstance } from "../../lib/axios";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/AuthStore";
+
+interface Customer{
+ id:number;
+ first_name:string;
+ last_name:string;
+ email: string;
+ created_at: string;
+}
 
 const CustomerManagement: React.FC = () => {
+  const navigate=useNavigate();
+  const {setCurrCustomer}=useAuthStore();
+
   const [resData, setResData]=useState(Object);
-  const [customers,setCustomers]=useState([]);
+  const [customers,setCustomers]=useState<Customer[]>([]);
   const [page, setPage]=useState(1);
   const [limit,setLimit]=useState(10);
   const [totalPages,setTotalPages]=useState(1);
@@ -58,15 +71,41 @@ const CustomerManagement: React.FC = () => {
                    </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 bg-white">
-                <tr className="hover:bg-gray-50 transition">
+            {customers.map((customer: any, ind: number) => (
+              <tr key={ind} className="hover:bg-gray-50 transition">
+                <td className="px-4 py-2 text-sm text-center">{ind + 1}</td>
+                <td className="px-4 py-2 text-sm text-center">{customer.id}</td>
                 <td className="px-4 py-2 text-sm text-center">
-                  hi
-                  </td>
-                  <td className="px-4 py-2 text-sm text-center">
-                  hi
-                  </td>
-                  </tr>
-                </tbody>
+                  {customer.first_name}
+                </td>
+                <td className="px-2 py-4 text-sm text-center">
+                  {customer.last_name}
+                </td>
+                <td className="px-4 py-2 text-sm text-center">
+                  {customer.email}
+                </td>
+                <td className="px-4 py-2 text-sm text-center">
+                  {customer.created_at}
+                </td>
+                <td onClick={()=>{
+                  
+                    navigate("/update-product")
+                }}>
+                  <button className="bg-blue-600 text-amber-50 p-2 rounded-xl">
+                    view Order
+                  </button>
+                </td>
+                <td onClick={()=>{
+                   setCurrCustomer(customers[ind])
+                    navigate("/delete-customer")
+                }}>
+                  <button className="bg-red-600 text-amber-50 p-2 rounded-xl">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
                 
               </table>
             </div>

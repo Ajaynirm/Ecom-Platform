@@ -47,6 +47,12 @@ function App() {
 
       <Route path="/update-product" element={<EditProduct />} />
       <Route path="/delete-product" element={<DeleteProduct />} />
+      
+     
+      {/* <Route path="/view-ordered-product" element={<DeleteProduct />} />
+      <Route path="/delete-order" element={<DeleteProduct />} /> */}
+
+      {/* <Route path="/delete-customer" element={<DeleteProduct />} /> */}
 
       <Route path="/place-order" element={<PlaceOrder />} />
       <Route path="/cancel-order" element={<CancelOrder />} />
