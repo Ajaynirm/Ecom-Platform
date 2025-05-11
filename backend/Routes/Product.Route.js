@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createProduct, updateProduct,deleteProduct,
-         getOneProductDetails, listAllProduct  } from "../Controller/Product.Controller.js";
+         getOneProductDetails, listAllProduct,  
+         searchProduct} from "../Controller/Product.Controller.js";
 import { protectRoute } from "../middleware/Auth.Middleware.js";
 const router = Router();
 
@@ -15,6 +16,9 @@ router.get("/detail/:id",getOneProductDetails);
 //GET /api/products?name=mouse&minPrice=100&maxPrice=300
 //GET /api/products?groupBy=stock_quantity
 router.get("/list-product",listAllProduct);
+
+//GET /products/search
+router.get("/search",searchProduct);
 
 export default router;
 

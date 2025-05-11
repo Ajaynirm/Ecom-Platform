@@ -113,7 +113,51 @@ export const getOneProductDetails = async (req, res) => {
     return res.status(500).json({ message: "Error fetching product details" });
   }
 };
+// GET /api/products/search
+export const searchProduct = async (req,res)=>{
+  const {searchWord} = req.query;
+  console.log(searchWord)
+  let {page=1,limit=10}=req.query;
+  page=parseInt(page)
+  limit=parseInt(limit)
 
+  const offset = (page - 1) * limit;
+  try{
+
+    const query = `
+    SELECT id, name, description, price, stock_quantity, created_at, updated_at
+    FROM Products
+    WHERE name LIKE ? 
+    LIMIT ? OFFSET ?
+  `;
+  const searchPattern = `%${searchWord || ''}%`;
+
+  const [products] = await pool.query(query, [searchPattern, limit, offset]);
+
+  // Count query with same filter
+  const countQuery = `
+    SELECT COUNT(*) as total
+    FROM Products
+    WHERE name LIKE ?
+  `;
+
+  const [countResult] = await pool.query(countQuery, [searchPattern]);
+  const total = countResult[0]?.total || 0;
+  const totalPages = Math.ceil(total / limit);
+
+  return res.status(200).json({
+    success: true,
+    page,
+    limit,
+    totalProducts: total,
+    totalPages,
+    products,
+  });
+  }catch(e){
+    console.error("Error in Search product  controller:  ", e.message);
+    return res.status(500).json({ message: "Error fetching products" });
+  }
+}
 
 //GET /api/products?page=1&limit=10
 //GET /api/products?name=mouse&minPrice=100&maxPrice=300

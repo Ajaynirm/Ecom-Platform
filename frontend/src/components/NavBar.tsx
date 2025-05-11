@@ -7,6 +7,7 @@ import {
   X,
   Search,
   ShoppingCart,
+  Filter
 } from "lucide-react";
 
 
@@ -22,17 +23,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="text-2xl font-bold text-blue-600">My Store</div>
 
-        {/* Desktop Search Bar */}
-        <div className="hidden md:flex flex-1 max-w-xl mx-4">
-          <div className="flex items-center border rounded-full px-3 py-1 bg-gray-100 focus-within:ring-2 ring-blue-400 w-full">
-            <Search className="w-5 h-5 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="flex-1 bg-transparent px-2 py-1 outline-none"
-            />
-          </div>
-        </div>
+        
 
         {/* Right: Auth / Cart / Hamburger */}
         <div className="flex items-center space-x-4">
