@@ -46,11 +46,15 @@
 - **MySQL** database
 - **Postman** (for API testing)
 
-![App Demo](assets/im1.png)
-<img src="assets/im2.png" width="600"/>
-![App Demo](assets/im2.png)
-![App Demo](assets/im3.png)
-![App Demo](assets/im4.png)
+![Order History Page](/frontend/src/assets/im1.png)
+![mobile order page](/frontend/src/assets/im2.png)
+![cart page](/frontend/src/assets/im3.png)
+![Admin product management](/frontend/src/assets/im4.png)
+
+![Add Product page](/frontend/src/assets/im5.png)
+![Edit Product Page](/frontend/src/assets/im6.png)
+![Delete Product page](/frontend/src/assets/im7.png)
+![Admin Customer management](/frontend/src/assets/im8.png)
 
 ### 1. Clone the repository
 ```bash
