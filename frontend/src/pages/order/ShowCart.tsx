@@ -14,9 +14,10 @@ type ApiCartItem = {
 
 function ShowCart() {
   const navigate = useNavigate();
-  const { cart, setCart, authUser } = useAuthStore();
+  const { cart, setCart, authUser, setTotalCartPrice } = useAuthStore();
+  const [totalPrice,setTotalPrice]=useState(0);
   const [orderPlaced, setOrderPlaced] = useState(false);
-
+  const cartItems = cart;
   useEffect(() => {
     const fetchCart = async () => {
       if (!authUser?.id) return;
@@ -42,14 +43,21 @@ function ShowCart() {
   
     fetchCart();
   }, [authUser?.id, setCart]);
+ 
+
+  useEffect(()=>{
+    const tp = cartItems.reduce(
+      (sum, item) => sum + item.price * item.stock_quantity,
+      0
+    );
+    setTotalPrice(tp);
+    setTotalCartPrice(tp);
+  },[totalPrice])
+
   
 
-  const cartItems = cart;
 
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.stock_quantity,
-    0
-  );
+  
 
   const handlePlaceOrder = () => {
     console.log('Order placed with items:', cartItems);

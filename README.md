@@ -1,18 +1,17 @@
-# Project Name
-
-
+# Project Name: Ecommerce Platform 
 
 ---
 
 ## Tech Stack
 
 ### Frontend:
-1. **React** with **TypeScript**
+1. **React** with **TypeScript** Zustand for Global state management
+
 2. **Tailwind CSS**
 
 ### Backend:
 1. **Express.js**
-2. **jsonwebtoken** (JWT) for authentication
+2. **jsonwebtoken** (JWT) for authentication (using Cookies)
 3. **bcrypt** for password hashing
 4. **CORS** for handling cross-origin requests
 
@@ -66,4 +65,11 @@ cd clonedFolder
 You can access the full API documentation for this project through Postman:
 
 [API Documentation - Postman](https://documenter.getpostman.com/view/31840272/2sB2jAanp2)
+
+
+
+
+
+
+
 

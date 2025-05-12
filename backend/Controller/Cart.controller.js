@@ -77,3 +77,37 @@ export const modifyQuantityInCart = async (req, res) => {
   
     res.json({ success: true });
   }
+
+
+  export const deleteAllCartItems = async (req, res) => {
+    const { customer_id } = req.query;
+  
+    if (!customer_id) {
+      return res.status(400).json({ message: "Customer ID is required" });
+    }
+  
+    try {
+      // Start a transaction to ensure atomicity (either all or nothing)
+      const connection = await pool.getConnection();
+      await connection.beginTransaction();
+  
+      // 1. Delete all cart items for the given customer
+      await connection.query(`
+        DELETE FROM Cart_Items
+        WHERE customer_id = ?
+      `, [customer_id]);
+  
+      // Commit the transaction
+      await connection.commit();
+  
+      res.status(200).json({ message: "All cart items deleted successfully" });
+  
+    } catch (error) {
+      console.error("Error deleting cart items:", error);
+      await connection.rollback();
+      res.status(500).json({ error: "Internal Server Error" });
+    } finally {
+      connection.release();
+    }
+  };
+  

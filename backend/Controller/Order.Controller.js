@@ -25,12 +25,12 @@ export const placeOrder = async (req, res) => {
       VALUES (?, ?, ?, ?)`;
 
     for (const item of products) {
-      const { product_id, quantity, unit_price } = item;
-      if (!product_id || !quantity || !unit_price) {
+      const { product_id, quantity, price } = item;
+      if (!product_id || !quantity || !price) {
         throw new Error("Invalid product entry in order");
       }
 
-      await connection.query(orderProductsQuery, [order_id, product_id, quantity, unit_price]);
+      await connection.query(orderProductsQuery, [order_id, product_id, quantity, price]);
     }
 
     await connection.commit();
@@ -184,3 +184,34 @@ export const listAllOrder = async (req, res) => {
   }
 };
 
+export const getOrders = async (req, res) => {
+  const { customer_id } = req.query;
+
+  if (!customer_id) {
+    return res.status(400).json({ message: "Customer ID is required" });
+  }
+
+  try {
+    // Query to fetch orders for the customer
+    const [rows] = await pool.query(`
+      SELECT 
+        o.id AS order_id, 
+        o.total_price, 
+        o.created_at,
+        oi.product_id, 
+        oi.quantity, 
+        oi.unit_price, 
+        p.name AS product_name
+      FROM Orders o
+      JOIN Order_Products oi ON o.id = oi.order_id
+      JOIN Products p ON oi.product_id = p.id
+      WHERE o.customer_id = ?
+    `, [customer_id]);
+
+    // Send the orders as a response
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

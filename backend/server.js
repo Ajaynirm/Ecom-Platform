@@ -10,7 +10,7 @@ import cors from "cors"
 import connection from "./config/db.js";
 import cookieParser from "cookie-parser";
 
-dotenv.config()
+dotenv.config();
 
 const port = parseInt((process.env.PORT || "3000"));
 
@@ -40,5 +40,6 @@ app.get("/", async(req,res)=>{
 
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
 
 

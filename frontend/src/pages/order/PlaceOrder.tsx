@@ -1,13 +1,45 @@
 import React, { useState } from 'react';
+import { axiosInstance } from '../../lib/axios';
+import { useAuthStore } from '../../store/AuthStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function PlaceOrder() {
+  const navigate = useNavigate();
+  const {authUser,cart,setCart,totalCartPrice} =useAuthStore()
   const [confirmationText, setConfirmationText] = useState('');
   const [isPlaced, setIsPlaced] = useState(false);
 
-  const handlePlaceOrder = () => {
-    // Simulate order placement logic
-    console.log('Order placed');
-    setIsPlaced(true);
+  const deleteCart = async()=>{
+    try {
+      const response= await axiosInstance.delete("/cart/delete-cart",{
+        params:{ customer_id: authUser.id}
+      }
+      )
+      console.log(response.data);
+    } catch (error: any) {
+      console.log("Error deleting cart:", error.response || error.message);
+    }
+  }
+  const handlePlaceOrder = async() => {
+    console.log(authUser.id,totalCartPrice,cart)
+    try {
+      const response = await axiosInstance.post("/order/place-order",{
+        customer_id:authUser.id,
+         total_price: totalCartPrice,
+          products: cart 
+      });
+      
+      if(response.data){
+        console.log(response.data);
+        console.log('Order placed');
+        setIsPlaced(true);
+        setCart([]);
+      }
+    
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   return (
@@ -42,9 +74,18 @@ export default function PlaceOrder() {
             </button>
           </>
         ) : (
-          <p className="text-green-600 font-semibold text-center">Order has been successfully placed.</p>
+          <div className='flex flex-col justify-center items-center'>
+              <p className="text-green-600 font-semibold text-center">Order has been successfully placed.</p>
+          <button className='p-4 btn text-blue-600 font-semibold text-center border-amber-300 rounded-2xl'
+          onClick={()=>{navigate("/home"); deleteCart()}}>
+                Back to Home
+          </button>
+          </div>
+          
         )}
       </div>
     </div>
   );
 }
+
+

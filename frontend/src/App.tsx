@@ -18,6 +18,7 @@ import EditProduct from "./pages/product/EditProduct";
 import DeleteProduct from "./pages/product/DeleteProduct";
 import ShowProduct from "./pages/product/ShowProduct";
 import ShowCart from "./pages/order/ShowCart";
+import ShowOrders from "./pages/order/ShowOrder";
 
 function App() {
   const { checkAuth ,authUser,isCheckingAuth} = useAuthStore();
@@ -70,7 +71,7 @@ function App() {
       {/* <Route path="/delete-customer" element={<DeleteProduct />} /> */}
       <Route path="/show-product" element={<ShowProduct />} />
 
-      {/* <Route path="/show-order" element={<PlaceOrder />} /> */}
+      <Route path="/show-order" element={<ShowOrders />} />
 
       <Route path="/place-order" element={<PlaceOrder />} />
       <Route path="/cancel-order" element={<CancelOrder />} />

@@ -31,12 +31,14 @@ interface AuthState {
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
+  totalCartPrice: number;
   currProduct: Product | null;
   currCustomer: object | null,
   currOrder: object | null,
   cart: Product[];
   tab:string;
   setTab: (data:string) => void,
+  setTotalCartPrice: (price: number) =>void,
   setCart: (data: Product | Product[]) => void,
   setCurrProduct:(data:object) => void,
   setCurrCustomer: (data:object)=> void,
@@ -54,9 +56,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoggingIn: false,
   isCheckingAuth: true,
   currProduct: null,
+  totalCartPrice:0,
   cart: [],
   setCurrProduct: (data:any)=>{
     set({currProduct: data})
+  },
+  setTotalCartPrice(price) {
+      set({totalCartPrice: price})
   },
   currCustomer: null,
   setCurrCustomer: (data: any)=>{
