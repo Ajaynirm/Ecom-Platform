@@ -20,6 +20,15 @@
 
 ---
 
+.env (for protecting sensitive information with the help of dotenv)
+PORT=5000
+JWT_SECRET_KEY=your_jwt_secret_key_here
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=your_db_username
+DB_PWD=your_db_password
+DATABASE=your_database_name
+
 ## Features
 - Authentication (Signup, Login, Logout)
 - CRUD operations for products, orders, and customers
