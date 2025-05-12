@@ -20,17 +20,48 @@
 
 ---
 
-### 🧩 Variable	                 📝 Description
-** PORT = 11000**
+## 📁 Create `.env` File (in `backend/` root directory)
+**PORT = 11000**
 ---
 **JWT_SECRET_KEY	=  "salt pepper khann"**
 ---
 ***DB_HOST	= 127.0.0.1**
 ---
 ***DB_PORT =  3306**
+---
 ***DB_USER = root**
+---
 ***DB_PWD = 12345678***
-***DATABASE	= Ecommerce_database**             
+---
+***DATABASE	= Ecommerce_database**       
+---
+# 🚀 Project Setup Instructions
+---
+## Frontend Setup:
+
+- Cd frontend
+- npm install
+- npm run dev
+---
+## Backend Setup:
+---
+- Cd backend
+- npm install
+- npm run dev
+---
+## Database Setup:
+
+- Create database named  Ecommerce_database in mysql workbench software.
+- Add database identity in .env file:
+- DB_HOST= 127.0.0.1
+- DB_PORT=3306
+- DB_USER=root
+- DB_PWD=12345678
+- DATABASE=Ecommerce_database
+---
+# Start mysql server at your local system …
+---
+
 
 ## Features
 - Authentication (Signup, Login, Logout)
@@ -39,12 +70,8 @@
 
 ---
 
-## Setup Instructions
 
-### Prerequisites:
-- **Node.js** (Recommended version: v14.x or later)
-- **MySQL** database
-- **Postman** (for API testing)
+
 
 ![Order History Page](/frontend/src/assets/im1.png)
 ![mobile order page](/frontend/src/assets/im2.png)
