@@ -21,7 +21,7 @@ export default function Profile() {
   } else {
     return (
       <div className="bg-gray-100 min-h-screen p-6">
-        {/* Profile Header */}
+        {/* Prof Header */}
 
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto text-center">
           <img alt="Profile" className="w-24 h-24 rounded-full mx-auto" />
@@ -29,7 +29,7 @@ export default function Profile() {
           <p className="text-gray-600">{authUser.email}</p>
         </div>
 
-        {/* User Details Section */}
+        {/* User Det Section */}
         <div className="max-w-3xl mx-auto mt-6 bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-4">Profile Information</h2>
           <div className="text-gray-700">
@@ -50,7 +50,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Settings & Logout */}
+        {/* Settings Logout */}
         <div className="max-w-3xl mx-auto mt-6 bg-white p-6 rounded-lg shadow-lg text-center flex flex-row justify-around">
           <div>
             <button className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-600">
@@ -70,6 +70,3 @@ export default function Profile() {
     );
   }
 }
-
-
-

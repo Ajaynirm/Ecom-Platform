@@ -12,28 +12,21 @@ const LoginPage = () => {
 
   const { login, isLoggingIn } = useAuthStore();
 
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(formData);
   };
-  if(isLoggingIn){
+  if (isLoggingIn) {
     return (
-        <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen">
         <Loader2 className="size-10 animate-spin" />
-    </div>
-    )
+      </div>
+    );
   }
   return (
-    // grid lg:grid-cols-2
     <div className="h-screen border-black">
-
-      
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8 bg-gray-200  font-bold p-6 shadow-lg rounded-lg">
-          
           <div className="text-center mb-8 ">
             <div className="flex flex-col items-center gap-2 group">
               <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
@@ -56,7 +49,9 @@ const LoginPage = () => {
                   className={`input input-bordered w-full pl-15 h-10`}
                   placeholder="you@example.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -74,7 +69,9 @@ const LoginPage = () => {
                   className={`input input-bordered w-full pl-10 h-10`}
                   placeholder="••••••••"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
                 <button
                   type="button"
@@ -90,7 +87,11 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary w-full h-22" disabled={isLoggingIn}>
+            <button
+              type="submit"
+              className="btn btn-primary w-full h-22"
+              disabled={isLoggingIn}
+            >
               {isLoggingIn ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -112,12 +113,6 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Right Side - Image/Pattern */}
-      {/* <AuthImagePattern
-        title={"Welcome back!"}
-        subtitle={"Sign in to continue your conversations and catch up with your messages."}
-      /> */}
     </div>
   );
 };

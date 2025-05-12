@@ -8,16 +8,14 @@ import {
   Search,
   ShoppingCart,
   Filter,
-  TruckElectric
+  TruckElectric,
 } from "lucide-react";
 
-
-
 const Navbar = () => {
-  const {authUser,logout }=useAuthStore();
+  const { authUser, logout } = useAuthStore();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const image=`https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png`
+  const image = `https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png`;
 
   return (
     <nav className="w-full bg-white shadow-md px-4 py-3">
@@ -25,31 +23,31 @@ const Navbar = () => {
         {/* Logo */}
         <div className="text-2xl font-bold text-blue-600">My Store</div>
 
-        
-
-        {/* Right: Auth / Cart / Hamburger */}
         <div className="flex items-center space-x-4">
           {/* Desktop Icons */}
           <div className="hidden md:flex items-center space-x-4">
             {authUser ? (
               <>
-               <button onClick={()=>{
-                navigate("/show-order")
-               }}>
-               <TruckElectric />
-               </button>
-                <button onClick={
-                  ()=>{
-                    navigate("/show-cart")
-                  }
-                }>
+                <button
+                  onClick={() => {
+                    navigate("/show-order");
+                  }}
+                >
+                  <TruckElectric />
+                </button>
+                <button
+                  onClick={() => {
+                    navigate("/show-cart");
+                  }}
+                >
                   <ShoppingCart className="w-6 h-6 text-gray-700 hover:text-blue-600" />
                 </button>
-                <button className="btn rounded-2xl bg-amber-600 p-2 text-lg"
-                onClick={async ()=>{
-                  await logout(); 
-                  navigate("/login");
-                }}
+                <button
+                  className="btn rounded-2xl bg-amber-600 p-2 text-lg"
+                  onClick={async () => {
+                    await logout();
+                    navigate("/login");
+                  }}
                 >
                   Logout
                 </button>
@@ -60,8 +58,12 @@ const Navbar = () => {
                 />
               </>
             ) : (
-              <button className="bg-blue-600 text-white px-4 py-1 rounded-full hover:bg-blue-700"
-              onClick={()=>{navigate("/login")}}>
+              <button
+                className="bg-blue-600 text-white px-4 py-1 rounded-full hover:bg-blue-700"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
                 Login
               </button>
             )}
@@ -107,8 +109,12 @@ const Navbar = () => {
               <ShoppingCart className="w-6 h-6 text-gray-700" />
             </div>
           ) : (
-            <button className="bg-blue-600 text-white w-full py-2 rounded-full hover:bg-blue-700"
-            onClick={()=>{navigate("/login")}}>
+            <button
+              className="bg-blue-600 text-white w-full py-2 rounded-full hover:bg-blue-700"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
               Login
             </button>
           )}

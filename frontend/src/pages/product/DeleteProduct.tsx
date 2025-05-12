@@ -1,8 +1,8 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/AuthStore.js';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/AuthStore.js";
 import { toast } from "react-hot-toast";
-import { axiosInstance } from '../../lib/axios.js';
+import { axiosInstance } from "../../lib/axios.js";
 
 const DeleteProduct = () => {
   const navigate = useNavigate();
@@ -27,11 +27,15 @@ const DeleteProduct = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-red-600">Delete Product</h2>
+        <h2 className="text-2xl font-semibold text-center mb-6 text-red-600">
+          Delete Product
+        </h2>
         <form className="space-y-4">
           {/* ID */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Product ID</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Product ID
+            </label>
             <input
               type="text"
               value={currProduct?.id || ""}
@@ -42,7 +46,9 @@ const DeleteProduct = () => {
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
             <input
               type="text"
               value={currProduct?.name || ""}
@@ -53,7 +59,9 @@ const DeleteProduct = () => {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <input
               type="text"
               value={currProduct?.description || ""}
@@ -64,7 +72,9 @@ const DeleteProduct = () => {
 
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Price</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Price
+            </label>
             <input
               type="number"
               value={currProduct?.price || ""}
@@ -75,7 +85,9 @@ const DeleteProduct = () => {
 
           {/* Stock Quantity */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Stock Quantity</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Stock Quantity
+            </label>
             <input
               type="number"
               value={currProduct?.stock_quantity || ""}
@@ -95,14 +107,13 @@ const DeleteProduct = () => {
         </form>
 
         <div className="mt-4 flex justify-center">
-        <button
-          onClick={() => navigate("/admin-home")}
-          className="text-sm text-blue-600 hover:underline"
-        >
-          Cancel / Back to Admin Home
-        </button>
+          <button
+            onClick={() => navigate("/admin-home")}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Cancel / Back to Admin Home
+          </button>
         </div>
-       
       </div>
     </div>
   );

@@ -4,7 +4,13 @@ import pool from "../config/db.js";
 export const placeOrder = async (req, res) => {
   const { customer_id, total_price, products } = req.body;
 
-  if (!customer_id || !total_price || !products || !Array.isArray(products) || products.length === 0) {
+  if (
+    !customer_id ||
+    !total_price ||
+    !products ||
+    !Array.isArray(products) ||
+    products.length === 0
+  ) {
     return res.status(400).json({ message: "Invalid order data" });
   }
 
@@ -30,12 +36,16 @@ export const placeOrder = async (req, res) => {
         throw new Error("Invalid product entry in order");
       }
 
-      await connection.query(orderProductsQuery, [order_id, product_id, quantity, price]);
+      await connection.query(orderProductsQuery, [
+        order_id,
+        product_id,
+        quantity,
+        price,
+      ]);
     }
 
     await connection.commit();
     res.status(201).json({ success: true, message: "Order placed", order_id });
-
   } catch (err) {
     await connection.rollback();
     console.error("Error placing order:", err.message);
@@ -46,43 +56,40 @@ export const placeOrder = async (req, res) => {
 };
 
 //get /order-detail
-export const viewOrder = async(req,res) =>{
+export const viewOrder = async (req, res) => {
+  const { order_id } = req.query;
 
-        const { order_id } = req.query;
-      
-        try {
-          const [orderRows] = await pool.query(
-            `SELECT * FROM Orders WHERE id = ?`,
-            [order_id]
-          );
-      
-          if (orderRows.length === 0) {
-            return res.status(404).json({ message: "Order not found" });
-          }
-      
-          const [productRows] = await pool.query(
-            `SELECT p.id, p.name, op.quantity, op.unit_price
+  try {
+    const [orderRows] = await pool.query(`SELECT * FROM Orders WHERE id = ?`, [
+      order_id,
+    ]);
+
+    if (orderRows.length === 0) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    const [productRows] = await pool.query(
+      `SELECT p.id, p.name, op.quantity, op.unit_price
              FROM Order_Products op
              JOIN Products p ON op.product_id = p.id
              WHERE op.order_id = ?`,
-            [order_id]
-          );
-      
-          return res.status(200).json({
-            order: orderRows[0],
-            products: productRows
-          });
-      
-        } catch (error) {
-          return res.status(500).json({ message: error.message });
-        }      
-}
+      [order_id]
+    );
+
+    return res.status(200).json({
+      order: orderRows[0],
+      products: productRows,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 export const groupOrder = async (req, res) => {
-  const { by = 'order_status' } = req.query;
+  const { by = "order_status" } = req.query;
 
-  // Whitelist allowed fields for grouping
-  const allowedFields = ['order_status', 'customer_id'];
+  // list allowed fields for grouping
+  const allowedFields = ["order_status", "customer_id"];
   if (!allowedFields.includes(by)) {
     return res.status(400).json({ message: `Invalid group field: ${by}` });
   }
@@ -96,7 +103,9 @@ export const groupOrder = async (req, res) => {
 
     res.status(200).json({ groupedBy: by, data: grouped });
   } catch (err) {
-    res.status(500).json({ message: "Error grouping orders", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error grouping orders", error: err.message });
   }
 };
 
@@ -126,7 +135,9 @@ export const filterOrder = async (req, res) => {
     values.push(end_date);
   }
 
-  const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  const whereClause = conditions.length
+    ? `WHERE ${conditions.join(" AND ")}`
+    : "";
 
   try {
     const [orders] = await pool.query(
@@ -135,10 +146,11 @@ export const filterOrder = async (req, res) => {
     );
     res.status(200).json({ filtered: true, count: orders.length, orders });
   } catch (err) {
-    res.status(500).json({ message: "Error filtering orders", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error filtering orders", error: err.message });
   }
 };
-
 
 export const deleteOrder = async (req, res) => {
   const { id } = req.query;
@@ -152,7 +164,9 @@ export const deleteOrder = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Order deleted" });
   } catch (err) {
-    res.status(500).json({ message: "Error deleting order", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting order", error: err.message });
   }
 };
 
@@ -168,7 +182,9 @@ export const listAllOrder = async (req, res) => {
       [limit, offset]
     );
 
-    const [countResult] = await pool.query(`SELECT COUNT(*) AS total FROM Orders`);
+    const [countResult] = await pool.query(
+      `SELECT COUNT(*) AS total FROM Orders`
+    );
     const total = countResult[0].total;
 
     res.status(200).json({
@@ -180,7 +196,9 @@ export const listAllOrder = async (req, res) => {
       orders,
     });
   } catch (err) {
-    res.status(500).json({ message: "Error fetching orders", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching orders", error: err.message });
   }
 };
 
@@ -193,7 +211,8 @@ export const getOrders = async (req, res) => {
 
   try {
     // Query to fetch orders for the customer
-    const [rows] = await pool.query(`
+    const [rows] = await pool.query(
+      `
       SELECT 
         o.id AS order_id, 
         o.total_price, 
@@ -206,9 +225,10 @@ export const getOrders = async (req, res) => {
       JOIN Order_Products oi ON o.id = oi.order_id
       JOIN Products p ON oi.product_id = p.id
       WHERE o.customer_id = ?
-    `, [customer_id]);
+    `,
+      [customer_id]
+    );
 
-    // Send the orders as a response
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error fetching orders:", error);

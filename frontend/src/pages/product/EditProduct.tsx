@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/AuthStore.js';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/AuthStore.js";
 import { toast } from "react-hot-toast";
-import { axiosInstance } from '../../lib/axios.js';
+import { axiosInstance } from "../../lib/axios.js";
 
 const EditProduct = () => {
   const navigate = useNavigate();
@@ -36,11 +36,15 @@ const EditProduct = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">Edit Product</h2>
+        <h2 className="text-2xl font-semibold text-center mb-6">
+          Edit Product
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* ID (readonly) */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Product ID</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Product ID
+            </label>
             <input
               type="text"
               value={formData.id}
@@ -51,11 +55,15 @@ const EditProduct = () => {
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
               className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -63,11 +71,15 @@ const EditProduct = () => {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <input
               type="text"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               required
               className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -75,11 +87,15 @@ const EditProduct = () => {
 
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Price</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Price
+            </label>
             <input
               type="number"
               value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, price: e.target.value })
+              }
               required
               className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -87,11 +103,15 @@ const EditProduct = () => {
 
           {/* Stock Quantity */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Stock Quantity</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Stock Quantity
+            </label>
             <input
               type="number"
               value={formData.stock_quantity}
-              onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, stock_quantity: e.target.value })
+              }
               required
               className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -106,14 +126,13 @@ const EditProduct = () => {
           </button>
         </form>
         <div className="mt-4 flex justify-center">
-        <button
-          onClick={() => navigate("/admin-home")}
-          className="text-sm text-blue-600 hover:underline"
-        >
-          Back to Admin Home
-        </button>
+          <button
+            onClick={() => navigate("/admin-home")}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Back to Admin Home
+          </button>
         </div>
-       
       </div>
     </div>
   );

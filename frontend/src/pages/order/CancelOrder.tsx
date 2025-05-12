@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function CancelOrder() {
-  const [confirmationText, setConfirmationText] = useState('');
+  const [confirmationText, setConfirmationText] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = () => {
-    // Simulate order deletion logic
-    console.log('Order deleted');
+    console.log("Order deleted");
     setIsDeleted(true);
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="bg-white shadow-lg rounded-2xl p-6 max-w-md w-full">
-        <h2 className="text-2xl font-semibold text-red-600 mb-4">Cancel Order</h2>
+        <h2 className="text-2xl font-semibold text-red-600 mb-4">
+          Cancel Order
+        </h2>
 
         {!isDeleted ? (
           <>
             <p className="mb-4 text-gray-700">
-              To confirm order cancellation, please type <strong>"delete"</strong> below:
+              To confirm order cancellation, please type{" "}
+              <strong>"delete"</strong> below:
             </p>
 
             <input
@@ -31,18 +33,20 @@ export default function CancelOrder() {
 
             <button
               onClick={handleDelete}
-              disabled={confirmationText.toLowerCase() !== 'delete'}
+              disabled={confirmationText.toLowerCase() !== "delete"}
               className={`w-full py-2 rounded-lg text-white font-semibold ${
-                confirmationText.toLowerCase() === 'delete'
-                  ? 'bg-red-600 hover:bg-red-700'
-                  : 'bg-gray-400 cursor-not-allowed'
+                confirmationText.toLowerCase() === "delete"
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-gray-400 cursor-not-allowed"
               }`}
             >
               Cancel Order
             </button>
           </>
         ) : (
-          <p className="text-green-600 font-semibold text-center">Order has been successfully cancelled.</p>
+          <p className="text-green-600 font-semibold text-center">
+            Order has been successfully cancelled.
+          </p>
         )}
       </div>
     </div>

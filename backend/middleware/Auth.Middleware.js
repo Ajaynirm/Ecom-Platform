@@ -1,12 +1,14 @@
 import jwt from "jsonwebtoken";
-import pool from "../config/db.js"; // update with your actual db config path
+import pool from "../config/db.js";
 
 export const protectRoute = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized - No Token Provided" });
+      return res
+        .status(401)
+        .json({ message: "Unauthorized - No Token Provided" });
     }
 
     const decoded = jwt.verify(token, "salt pepper khann");
@@ -15,9 +17,11 @@ export const protectRoute = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized - Invalid Token" });
     }
 
-    // Query user from MySQL
-    const [rows] = await pool
-      .query("SELECT id, first_name, email FROM Customers WHERE id = ?", [decoded.userId]);
+    // Query user
+    const [rows] = await pool.query(
+      "SELECT id, first_name, email FROM Customers WHERE id = ?",
+      [decoded.userId]
+    );
 
     const user = rows[0];
 

@@ -16,7 +16,7 @@ const pool = createPool({
   try {
     const connection = await pool.getConnection();
     console.log("Connected to MySQL database!");
-    connection.release(); // Release the connection back to the pool
+    connection.release();
 
     const schema = `CREATE TABLE IF NOT EXISTS Customers (
         id INT AUTO_INCREMENT PRIMARY KEY,

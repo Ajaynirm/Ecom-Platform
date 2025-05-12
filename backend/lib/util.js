@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv'; 
+import dotenv from "dotenv";
 dotenv.config();
 
-const secret=process.env.JWT_SECRET_KEY;
+const secret = process.env.JWT_SECRET_KEY;
 
 export const generateToken = (userId, res) => {
   const token = jwt.sign({ userId }, secret, {
@@ -10,8 +10,8 @@ export const generateToken = (userId, res) => {
   });
   res.cookie("jwt", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true, 
-    sameSite: "strict", 
+    httpOnly: true,
+    sameSite: "strict",
     secure: false,
   });
 

@@ -11,7 +11,7 @@ type Product = {
 };
 
 const ProductManagement: React.FC = () => {
-  const {setCurrProduct} =useAuthStore();
+  const { setCurrProduct } = useAuthStore();
 
   const navigate = useNavigate();
   const [resData, setResData] = useState(Object);
@@ -92,18 +92,22 @@ const ProductManagement: React.FC = () => {
                 <td className="px-4 py-2 text-sm text-center">
                   {product.stock_quantity}
                 </td>
-                <td onClick={()=>{
-                  setCurrProduct(products[ind])
-                    navigate("/update-product")
-                }}>
+                <td
+                  onClick={() => {
+                    setCurrProduct(products[ind]);
+                    navigate("/update-product");
+                  }}
+                >
                   <button className="bg-blue-600 text-amber-50 p-2 rounded-xl">
                     Update
                   </button>
                 </td>
-                <td onClick={()=>{
-                   setCurrProduct(products[ind])
-                    navigate("/delete-product")
-                }}>
+                <td
+                  onClick={() => {
+                    setCurrProduct(products[ind]);
+                    navigate("/delete-product");
+                  }}
+                >
                   <button className="bg-red-600 text-amber-50 p-2 rounded-xl">
                     Delete
                   </button>
@@ -111,16 +115,16 @@ const ProductManagement: React.FC = () => {
               </tr>
             ))}
           </tbody>
-
         </table>
       </div>
 
-       {/* Pagination */}
-       <div className="mt-8 flex justify-center items-center space-x-2">
+      {/* Pagination */}
+      <div className="mt-8 flex justify-center items-center space-x-2">
         <button
           onClick={() => {
-            setPage((p) => Math.max(p - 1, 1))
-            setCurrentPage((p)=> Math.max(p-1,1))}}
+            setPage((p) => Math.max(p - 1, 1));
+            setCurrentPage((p) => Math.max(p - 1, 1));
+          }}
           disabled={currentPage === 1}
           className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
         >
@@ -132,11 +136,10 @@ const ProductManagement: React.FC = () => {
           return (
             <button
               key={pageNum}
-              onClick={() => {setPage(pageNum)
-                setCurrentPage(pageNum)
-              }
-                
-              }
+              onClick={() => {
+                setPage(pageNum);
+                setCurrentPage(pageNum);
+              }}
               className={`px-3 py-1 rounded ${
                 pageNum === currentPage
                   ? "bg-blue-600 text-white"
@@ -150,8 +153,8 @@ const ProductManagement: React.FC = () => {
 
         <button
           onClick={() => {
-            setPage((p) => Math.min(p + 1, totalPages))
-            setCurrentPage((p)=> Math.min(p+1,totalPages))
+            setPage((p) => Math.min(p + 1, totalPages));
+            setCurrentPage((p) => Math.min(p + 1, totalPages));
           }}
           disabled={currentPage === totalPages}
           className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
@@ -159,7 +162,6 @@ const ProductManagement: React.FC = () => {
           Next
         </button>
       </div>
-
     </div>
   );
 };

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/AuthStore';
-import { axiosInstance } from '../../lib/axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/AuthStore";
+import { axiosInstance } from "../../lib/axios";
 
 type ApiCartItem = {
   id: number;
@@ -15,65 +15,60 @@ type ApiCartItem = {
 function ShowCart() {
   const navigate = useNavigate();
   const { cart, setCart, authUser, setTotalCartPrice } = useAuthStore();
-  const [totalPrice,setTotalPrice]=useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const cartItems = cart;
   useEffect(() => {
     const fetchCart = async () => {
       if (!authUser?.id) return;
-  
+
       try {
-        const response = await axiosInstance.get(`/cart/get-cart`,{
+        const response = await axiosInstance.get(`/cart/get-cart`, {
           params: {
-            customer_id : authUser.id
-          }
-        }
-        );
-        console.log(response.data)
-        const mapped = (response.data as ApiCartItem[]).map(item => ({
+            customer_id: authUser.id,
+          },
+        });
+        console.log(response.data);
+        const mapped = (response.data as ApiCartItem[]).map((item) => ({
           ...item,
           stock_quantity: item.quantity,
         }));
-  
+
         setCart(mapped);
       } catch (err) {
         console.error("Failed to fetch cart", err);
       }
     };
-  
+
     fetchCart();
   }, [authUser?.id, setCart]);
- 
 
-  useEffect(()=>{
+  useEffect(() => {
     const tp = cartItems.reduce(
       (sum, item) => sum + item.price * item.stock_quantity,
       0
     );
     setTotalPrice(tp);
     setTotalCartPrice(tp);
-  },[totalPrice])
-
-  
-
-
-  
+  }, [totalPrice]);
 
   const handlePlaceOrder = () => {
-    console.log('Order placed with items:', cartItems);
+    console.log("Order placed with items:", cartItems);
     setCart([]);
     setOrderPlaced(true);
   };
 
   const increaseQty = (id: number) => {
-    const updatedCart = cart.map(item =>
-      item.id === id ? { ...item, stock_quantity: item.stock_quantity + 1 } : item
+    const updatedCart = cart.map((item) =>
+      item.id === id
+        ? { ...item, stock_quantity: item.stock_quantity + 1 }
+        : item
     );
     setCart(updatedCart);
   };
 
   const decreaseQty = (id: number) => {
-    const updatedCart = cart.map(item =>
+    const updatedCart = cart.map((item) =>
       item.id === id && item.stock_quantity > 1
         ? { ...item, stock_quantity: item.stock_quantity - 1 }
         : item
@@ -82,7 +77,7 @@ function ShowCart() {
   };
 
   const removeItem = (id: number) => {
-    const updatedCart = cart.filter(item => item.id !== id);
+    const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
   };
 
@@ -97,7 +92,10 @@ function ShowCart() {
           <>
             <ul className="divide-y divide-gray-200 mb-4">
               {cartItems.map((item) => (
-                <li key={item.id} className="py-4 flex justify-between items-center">
+                <li
+                  key={item.id}
+                  className="py-4 flex justify-between items-center"
+                >
                   <div>
                     <p className="font-medium">{item.name}</p>
                     <div className="flex items-center mt-1">
@@ -105,16 +103,22 @@ function ShowCart() {
                         className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
                         onClick={() => decreaseQty(item.id)}
                         disabled={item.stock_quantity <= 1}
-                      >-</button>
+                      >
+                        -
+                      </button>
                       <span className="px-4">{item.stock_quantity}</span>
                       <button
                         className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
                         onClick={() => increaseQty(item.id)}
-                      >+</button>
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold">${(item.price * item.stock_quantity).toFixed(2)}</p>
+                    <p className="font-semibold">
+                      ${(item.price * item.stock_quantity).toFixed(2)}
+                    </p>
                     <button
                       className="text-red-500 text-sm mt-1 hover:underline"
                       onClick={() => removeItem(item.id)}
@@ -128,11 +132,13 @@ function ShowCart() {
 
             <div className="flex justify-between items-center border-t pt-4 mb-4">
               <span className="font-semibold text-lg">Total:</span>
-              <span className="text-green-600 font-bold text-lg">${totalPrice.toFixed(2)}</span>
+              <span className="text-green-600 font-bold text-lg">
+                ${totalPrice.toFixed(2)}
+              </span>
             </div>
 
             {!orderPlaced ? (
-              <div className='flex flex-col items-center'>
+              <div className="flex flex-col items-center">
                 <button
                   onClick={() => navigate("/place-order")}
                   className="w-full py-2 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700"
@@ -148,7 +154,7 @@ function ShowCart() {
           </>
         )}
         <div>
-          <button 
+          <button
             onClick={() => navigate("/home")}
             className="w-50 py-2 m-2 rounded-lg text-white font-semibold bg-blue-500 hover:bg-blue-400"
           >

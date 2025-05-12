@@ -15,10 +15,12 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosInstance.post("/products/create-product", formData);
+      const res = await axiosInstance.post(
+        "/products/create-product",
+        formData
+      );
       if (res) {
         toast.success("Product added successfully");
-        
       }
     } catch (e) {
       toast.error("Error while adding laptop");
@@ -44,7 +46,9 @@ const AddProduct = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1">
+              Description
+            </label>
             <input
               type="text"
               className="h-20 w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
@@ -71,7 +75,9 @@ const AddProduct = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Stock Quantity</label>
+            <label className="block text-sm font-medium mb-1">
+              Stock Quantity
+            </label>
             <input
               type="number"
               min="0"
