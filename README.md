@@ -46,6 +46,12 @@
 - **MySQL** database
 - **Postman** (for API testing)
 
+![App Demo](assets/im1.png)
+<img src="assets/im2.png" width="600"/>
+![App Demo](assets/im2.png)
+![App Demo](assets/im3.png)
+![App Demo](assets/im4.png)
+
 ### 1. Clone the repository
 ```bash
 git clone 
@@ -82,11 +88,7 @@ You can access the full API documentation for this project through Postman:
 
 
 
-![App Demo](assets/im1.png)
-<img src="assets/im2.png" width="600"/>
-![App Demo](assets/im2.png)
-![App Demo](assets/im3.png)
-![App Demo](assets/im4.png)
+
 
 
 
