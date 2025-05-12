@@ -88,7 +88,7 @@ const HomePage: React.FC = () => {
               type="text"
               placeholder="Search..."
               value={searchWord}
-              onChange={(e)=>{setSearchWord(e.target.value); console.log("hi")}}
+              onChange={(e)=>{setSearchWord(e.target.value)}}
               className="flex-1 bg-transparent px-2 py-1 outline-none"
             />
           </div>

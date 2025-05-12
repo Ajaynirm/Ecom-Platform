@@ -3,8 +3,8 @@ import { getUserCart,updateUserCart } from "../Controller/Cart.controller.js";
 const router = Router();
 
 //           /api/cart
-router.get('/:customerId',getUserCart);
-router.post('/update/:customerId',updateUserCart);
+router.get('/get-cart',getUserCart);
+router.post('/update-cart',updateUserCart);
 
 export default router;
 

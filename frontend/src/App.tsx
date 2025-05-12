@@ -39,7 +39,7 @@ function App() {
       
       <Navbar />
       <Routes>
-      {/* <Route path="/home" element={<ShowProduct />} />  */}
+      <Route path="/" element={<HomePage />} /> 
       <Route path="/home" element={ <HomePage />} />
       <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/home" />} />
       //for customer

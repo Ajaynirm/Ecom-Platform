@@ -1,13 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/AuthStore';
+import { axiosInstance } from '../../lib/axios';
+
+type ApiCartItem = {
+  id: number;
+  product_id: number;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+};
 
 function ShowCart() {
   const navigate = useNavigate();
-  const { cart, setCart } = useAuthStore();
+  const { cart, setCart, authUser } = useAuthStore();
+  const [orderPlaced, setOrderPlaced] = useState(false);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      if (!authUser?.id) return;
+  
+      try {
+        const response = await axiosInstance.get(`/cart/get-cart`,{
+          params: {
+            customer_id : authUser.id
+          }
+        }
+        );
+        console.log(response.data)
+        const mapped = (response.data as ApiCartItem[]).map(item => ({
+          ...item,
+          stock_quantity: item.quantity,
+        }));
+  
+        setCart(mapped);
+      } catch (err) {
+        console.error("Failed to fetch cart", err);
+      }
+    };
+  
+    fetchCart();
+  }, [authUser?.id, setCart]);
+  
 
   const cartItems = cart;
-  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.stock_quantity,
@@ -16,7 +53,7 @@ function ShowCart() {
 
   const handlePlaceOrder = () => {
     console.log('Order placed with items:', cartItems);
-    setCart([]); // clear cart
+    setCart([]);
     setOrderPlaced(true);
   };
 
@@ -87,12 +124,14 @@ function ShowCart() {
             </div>
 
             {!orderPlaced ? (
-              <button
-                onClick={() => navigate("/place-order")}
-                className="w-full py-2 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700"
-              >
-                Confirm & Place Order
-              </button>
+              <div className='flex flex-col items-center'>
+                <button
+                  onClick={() => navigate("/place-order")}
+                  className="w-full py-2 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700"
+                >
+                  Confirm & Place Order
+                </button>
+              </div>
             ) : (
               <p className="text-green-600 text-center font-semibold mt-4">
                 Your order has been placed successfully!
@@ -100,6 +139,14 @@ function ShowCart() {
             )}
           </>
         )}
+        <div>
+          <button 
+            onClick={() => navigate("/home")}
+            className="w-50 py-2 m-2 rounded-lg text-white font-semibold bg-blue-500 hover:bg-blue-400"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     </div>
   );
