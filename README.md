@@ -21,13 +21,16 @@
 ---
 
 ### 🧩 Variable	                 📝 Description
-*** PORT	🌐 (e.g., 5000)**
-***JWT_SECRET_KEY	🔐 ***
-***DB_HOST	🏠 ***
-***DB_PORT	🔌 ***
-***DB_USER	👤 ***
-***DB_PWD	🔑 ***
-***DATABASE	🗂️  ***             
+** PORT = 11000**
+---
+**JWT_SECRET_KEY	=  "salt pepper khann"**
+---
+***DB_HOST	= 127.0.0.1**
+---
+***DB_PORT =  3306**
+***DB_USER = root**
+***DB_PWD = 12345678***
+***DATABASE	= Ecommerce_database**             
 
 ## Features
 - Authentication (Signup, Login, Logout)
@@ -73,7 +76,9 @@ cd clonedFolder
 
 You can access the full API documentation for this project through Postman:
 
-[API Documentation - Postman](https://documenter.getpostman.com/view/31840272/2sB2jAanp2)
+[API Documentation - Postman]
+---
+(https://documenter.getpostman.com/view/31840272/2sB2jAanp2)
 
 
 
