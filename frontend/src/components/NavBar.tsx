@@ -7,15 +7,17 @@ import {
   X,
   Search,
   ShoppingCart,
-  Filter
+  Filter,
+  TruckElectric
 } from "lucide-react";
 
 
 
 const Navbar = () => {
-  const {authUser}=useAuthStore();
+  const {authUser,logout }=useAuthStore();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const image=`https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png`
 
   return (
     <nav className="w-full bg-white shadow-md px-4 py-3">
@@ -31,11 +33,28 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {authUser ? (
               <>
-                <button>
+               <button onClick={()=>{
+                navigate("/show-order")
+               }}>
+               <TruckElectric />
+               </button>
+                <button onClick={
+                  ()=>{
+                    navigate("/show-cart")
+                  }
+                }>
                   <ShoppingCart className="w-6 h-6 text-gray-700 hover:text-blue-600" />
                 </button>
+                <button className="btn rounded-2xl bg-amber-600 p-2 text-lg"
+                onClick={async ()=>{
+                  await logout(); 
+                  navigate("/login");
+                }}
+                >
+                  Logout
+                </button>
                 <img
-                  src={""}
+                  src={image}
                   alt={"pic"}
                   className="w-8 h-8 rounded-full border border-gray-300"
                 />

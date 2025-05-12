@@ -1,5 +1,7 @@
 import React, { useEffect, useState ,useRef} from "react";
 import { axiosInstance } from "../../lib/axios";
+import { useAuthStore } from "../../store/AuthStore";
+import { useNavigate } from "react-router-dom";
 
 import {
   Search,
@@ -22,12 +24,18 @@ interface ResData {
 }
 
 const HomePage: React.FC = () => {
+
+  const {setCurrProduct}=useAuthStore();
+  const navigate=useNavigate();
   const [resData, setResData]=useState(Object);
+
   const [products,setProducts]=useState([]);
   const [page, setPage]=useState(1);
   const [limit,setLimit]=useState(10);
+
   const [totalPages,setTotalPages]=useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+
   const [searchWord,setSearchWord]=useState(" ");
   // const searchInputRef = useRef<HTMLInputElement>(null);
   const [image,setImage]=useState(`https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`)
@@ -88,10 +96,15 @@ const HomePage: React.FC = () => {
       <h1 className="text-3xl font-bold mb-6 text-center">Our Products</h1>
      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product: Product) => (
+        {products.map((product: Product,ind: number) => (
           <div
             key={product.id}
             className="border rounded-lg p-4 shadow hover:shadow-lg transition"
+            onClick={()=>{
+              setCurrProduct(products[ind]);
+              navigate("/show-product");
+            }}
+
           >
             <img
               src={image}

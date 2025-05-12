@@ -13,10 +13,11 @@ import HomePage from "./pages/Customer/Home";
 import AdminHome from "./pages/Admin/AdminHome";
 import PlaceOrder from "./pages/order/PlaceOrder";
 import CancelOrder from "./pages/order/CancelOrder";
-import CartPage from "./pages/order/ShowCart";
 import AddProduct from "./pages/product/AddProduct";
 import EditProduct from "./pages/product/EditProduct";
 import DeleteProduct from "./pages/product/DeleteProduct";
+import ShowProduct from "./pages/product/ShowProduct";
+import ShowCart from "./pages/order/ShowCart";
 
 function App() {
   const { checkAuth ,authUser,isCheckingAuth} = useAuthStore();
@@ -38,12 +39,26 @@ function App() {
       
       <Navbar />
       <Routes>
-      {/* <Route path="/" element={<Home />} />  */}
-      <Route path="/" element={ <HomePage />} />
+      {/* <Route path="/home" element={<ShowProduct />} />  */}
+      <Route path="/home" element={ <HomePage />} />
       <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/home" />} />
-      <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/home" />} />
+      //for customer
+      <Route
+  path="/login"
+  element={
+    !authUser ? (
+      <LoginPage />
+    ) : authUser.role === "admin" ? (
+      <Navigate to="/admin-home" />
+    ) : (
+      <Navigate to="/home" />
+    )
+  }
+/>
+
+      //for admin
       <Route path="/add-product" element={<AddProduct />} />
-      <Route path="/user-cart" element={<CartPage />} />
+      <Route path="/show-cart" element={<ShowCart />} />
 
       <Route path="/update-product" element={<EditProduct />} />
       <Route path="/delete-product" element={<DeleteProduct />} />
@@ -53,6 +68,9 @@ function App() {
       <Route path="/delete-order" element={<DeleteProduct />} /> */}
 
       {/* <Route path="/delete-customer" element={<DeleteProduct />} /> */}
+      <Route path="/show-product" element={<ShowProduct />} />
+
+      {/* <Route path="/show-order" element={<PlaceOrder />} /> */}
 
       <Route path="/place-order" element={<PlaceOrder />} />
       <Route path="/cancel-order" element={<CancelOrder />} />

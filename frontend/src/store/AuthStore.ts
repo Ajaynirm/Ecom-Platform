@@ -3,7 +3,10 @@ import {axiosInstance}  from "../lib/axios.ts";
 import toast from "react-hot-toast";
 import { data } from "react-router-dom";
 
-type product={
+
+// const navigate=useNavigate();
+
+type Product={
   id:number;
   name:string;
   description: string;
@@ -11,17 +14,30 @@ type product={
   stock_quantity: number;
 
 }
+type CartItem = {
+  id: number;
+  quantity: number;
+  product_id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock_quantity: number;
+};
+
+
 // Define the shape of the auth state
 interface AuthState {
   authUser: any; // You can replace `any` with a proper user type
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
-  currProduct: product | null;
+  currProduct: Product | null;
   currCustomer: object | null,
   currOrder: object | null,
+  cart: Product[];
   tab:string;
   setTab: (data:string) => void,
+  setCart: (data: Product | Product[]) => void,
   setCurrProduct:(data:object) => void,
   setCurrCustomer: (data:object)=> void,
   setCurrOrder: (data:object)=> void,
@@ -38,6 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoggingIn: false,
   isCheckingAuth: true,
   currProduct: null,
+  cart: [],
   setCurrProduct: (data:any)=>{
     set({currProduct: data})
   },
@@ -49,6 +66,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setCurrOrder: (data: any)=>{
     set({currCustomer: data});
   },
+ 
+setCart: (data: Product | Product[]) => {
+  if (Array.isArray(data)) {
+    // full replacement
+    set({ cart: data });
+  } else {
+    // add new item
+    const currentCart = get().cart;
+    set({ cart: [...currentCart, data] });
+  }
+}
+,
   tab: "products",
   setTab: (tab:string)=>{
     set({tab: tab});

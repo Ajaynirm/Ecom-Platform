@@ -4,12 +4,12 @@ import bcrypt from "bcryptjs";
 
 
 export const signup = async (req, res) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { first_name, last_name, email, password,role } = req.body;
 
   if (!first_name || !last_name || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
-
+  
   if (password.length < 6) {
     return res.status(400).json({ message: "Password must be at least 6 characters" });
   }
@@ -29,11 +29,25 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Insert new user
-    const [result] = await pool.query(
-      `INSERT INTO Customers (first_name, last_name, email, password_hash, created_at, updated_at)
-       VALUES (?, ?, ?, ?, NOW(), NOW())`,
-      [first_name, last_name, email, hashedPassword]
-    );
+    let result;
+
+    if(role==="admin"){
+       const [res] = await pool.query(
+        `INSERT INTO Customers (first_name, last_name, email, password_hash, created_at, updated_at,role)
+         VALUES (?, ?, ?, ?, NOW(), NOW(), ?)`,
+        [first_name, last_name, email, hashedPassword,role]
+      );
+      result=res;
+    }else{
+      [res] = await pool.query(
+        `INSERT INTO Customers (first_name, last_name, email, password_hash, created_at, updated_at)
+         VALUES (?, ?, ?, ?, NOW(), NOW())`,
+        [first_name, last_name, email, hashedPassword]
+      );
+      result=res;
+    }
+    
+
 
     const userId = result.insertId;
 
@@ -41,7 +55,8 @@ export const signup = async (req, res) => {
     generateToken(userId, res);
 
     return res.status(201).json({
-      _id: userId,
+      id: userId,
+      role: result.role,
       first_name,
       last_name,
       email,
@@ -56,10 +71,13 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   try {
     // Get user by email
-    const [rows] = await pool.promise().query('SELECT * FROM Customers WHERE email = ?', [email]);
+    const [rows] = await pool.query('SELECT * FROM Customers WHERE email = ?', [email]);
 
     if (rows.length === 0) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -77,7 +95,8 @@ export const login = async (req, res) => {
     generateToken(user.id, res); // assuming your MySQL table's primary key is `id`
 
     res.status(200).json({
-      _id: user.id,
+      id: user.id,
+      role: user.role,
       first_name: user.first_name,
       email: user.email,
       profilePic: user.profilePic || null, // optional, depends on your schema

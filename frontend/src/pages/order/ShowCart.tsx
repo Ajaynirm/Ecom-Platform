@@ -1,24 +1,44 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/AuthStore';
 
-export default function CartPage() {
-  // Example cart items — in a real app, you'd get these from context, props, or backend
-  const [cartItems] = useState([
-    { id: 1, name: 'Product A', price: 49.99, quantity: 2 },
-    { id: 2, name: 'Product B', price: 29.99, quantity: 1 },
-    { id: 3, name: 'Product C', price: 19.99, quantity: 3 },
-  ]);
+function ShowCart() {
+  const navigate = useNavigate();
+  const { cart, setCart } = useAuthStore();
+
+  const cartItems = cart;
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price * item.stock_quantity,
     0
   );
 
-  const [confirmationText, setConfirmationText] = useState('');
-  const [orderPlaced, setOrderPlaced] = useState(false);
-
   const handlePlaceOrder = () => {
     console.log('Order placed with items:', cartItems);
+    setCart([]); // clear cart
     setOrderPlaced(true);
+  };
+
+  const increaseQty = (id: number) => {
+    const updatedCart = cart.map(item =>
+      item.id === id ? { ...item, stock_quantity: item.stock_quantity + 1 } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const decreaseQty = (id: number) => {
+    const updatedCart = cart.map(item =>
+      item.id === id && item.stock_quantity > 1
+        ? { ...item, stock_quantity: item.stock_quantity - 1 }
+        : item
+    );
+    setCart(updatedCart);
+  };
+
+  const removeItem = (id: number) => {
+    const updatedCart = cart.filter(item => item.id !== id);
+    setCart(updatedCart);
   };
 
   return (
@@ -32,15 +52,30 @@ export default function CartPage() {
           <>
             <ul className="divide-y divide-gray-200 mb-4">
               {cartItems.map((item) => (
-                <li key={item.id} className="py-2 flex justify-between">
+                <li key={item.id} className="py-4 flex justify-between items-center">
                   <div>
                     <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-gray-500">
-                      Quantity: {item.quantity}
-                    </p>
+                    <div className="flex items-center mt-1">
+                      <button
+                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                        onClick={() => decreaseQty(item.id)}
+                        disabled={item.stock_quantity <= 1}
+                      >-</button>
+                      <span className="px-4">{item.stock_quantity}</span>
+                      <button
+                        className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                        onClick={() => increaseQty(item.id)}
+                      >+</button>
+                    </div>
                   </div>
-                  <div className="text-right font-semibold">
-                    ${(item.price * item.quantity).toFixed(2)}
+                  <div className="text-right">
+                    <p className="font-semibold">${(item.price * item.stock_quantity).toFixed(2)}</p>
+                    <button
+                      className="text-red-500 text-sm mt-1 hover:underline"
+                      onClick={() => removeItem(item.id)}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </li>
               ))}
@@ -52,17 +87,12 @@ export default function CartPage() {
             </div>
 
             {!orderPlaced ? (
-              <>
-                
-
-                <button
-                  onClick={handlePlaceOrder}
-                  disabled={confirmationText.toLowerCase() !== 'place'}
-                  className={`w-full py-2 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700`}
-                >
-                  Confirm & Place Order
-                </button>
-              </>
+              <button
+                onClick={() => navigate("/place-order")}
+                className="w-full py-2 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700"
+              >
+                Confirm & Place Order
+              </button>
             ) : (
               <p className="text-green-600 text-center font-semibold mt-4">
                 Your order has been placed successfully!
@@ -74,3 +104,5 @@ export default function CartPage() {
     </div>
   );
 }
+
+export default ShowCart;

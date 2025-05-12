@@ -17,7 +17,6 @@ export const protectRoute = async (req, res, next) => {
 
     // Query user from MySQL
     const [rows] = await pool
-      .promise()
       .query("SELECT id, first_name, email FROM Customers WHERE id = ?", [decoded.userId]);
 
     const user = rows[0];
