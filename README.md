@@ -21,13 +21,13 @@
 ---
 
 ### 🧩 Variable	                 📝 Description
-*** PORT	🌐                  The port your backend server runs on (e.g., 5000)**
-***JWT_SECRET_KEY	🔐         Secret key used to sign/verify JWTs for authentication**
-***DB_HOST	🏠               Host address of your database (e.g., localhost or a remote DB URL)**
-***DB_PORT	🔌               Port on which your database is running (5432 for PostgreSQL)**
-***DB_USER	👤               Username used to connect to the database**
-***DB_PWD	🔑               Password for the database user**
-***DATABASE	🗂️               Name of your specific database to connect to**
+*** PORT	🌐 (e.g., 5000)**
+***JWT_SECRET_KEY	🔐 ***
+***DB_HOST	🏠 ***
+***DB_PORT	🔌 ***
+***DB_USER	👤 ***
+***DB_PWD	🔑 ***
+***DATABASE	🗂️  ***             
 
 ## Features
 - Authentication (Signup, Login, Logout)
