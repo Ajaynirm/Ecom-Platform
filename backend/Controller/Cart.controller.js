@@ -84,10 +84,10 @@ export const deleteAllCartItems = async (req, res) => {
   if (!customer_id) {
     return res.status(400).json({ message: "Customer ID is required" });
   }
-
+let connection;
   try {
     // Start a transaction to ensure atomicity (either all or nothing)
-    const connection = await pool.getConnection();
+     connection = await pool.getConnection();
     await connection.beginTransaction();
 
     // 1. Delete all cart items for the given customer

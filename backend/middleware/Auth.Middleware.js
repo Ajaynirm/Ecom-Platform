@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export const protectRoute = async (req, res, next) => {
   try {
@@ -10,8 +13,8 @@ export const protectRoute = async (req, res, next) => {
         .status(401)
         .json({ message: "Unauthorized - No Token Provided" });
     }
-
-    const decoded = jwt.verify(token, "salt pepper khann");
+    const secret=process.env.JWT_SECRET_KEY;
+    const decoded = jwt.verify(token, secret);
 
     if (!decoded) {
       return res.status(401).json({ message: "Unauthorized - Invalid Token" });

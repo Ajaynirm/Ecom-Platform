@@ -147,9 +147,14 @@ function ShowCart() {
                 </button>
               </div>
             ) : (
+              
+              <>
               <p className="text-green-600 text-center font-semibold mt-4">
                 Your order has been placed successfully!
               </p>
+              {setOrderPlaced(true)}
+              </>
+              
             )}
           </>
         )}

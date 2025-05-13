@@ -43,26 +43,17 @@ function App() {
       <Route path="/" element={<HomePage />} /> 
       <Route path="/home" element={ <HomePage />} />
       <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/home" />} />
-      //for customer
-      <Route
-  path="/login"
-  element={
-    !authUser ? (
-      <LoginPage />
-    ) : authUser.role === "admin" ? (
-      <Navigate to="/admin-home" />
-    ) : (
-      <Navigate to="/home" />
+     
+      <Route path="/login" element={ !authUser ? ( <LoginPage /> ) : authUser.role === "admin" ? (<Navigate to="/admin-home" />) : ( <Navigate to="/home" />
     )
   }
 />
 
-      //for admin
-      <Route path="/add-product" element={<AddProduct />} />
-      <Route path="/show-cart" element={<ShowCart />} />
+      <Route path="/add-product" element={(authUser && authUser.role=='admin') ? <AddProduct /> : <Navigate to="/home" />} />
+      <Route path="/show-cart" element={authUser ?<ShowCart /> : <Navigate to={"/home"} />} />
 
-      <Route path="/update-product" element={<EditProduct />} />
-      <Route path="/delete-product" element={<DeleteProduct />} />
+      <Route path="/update-product" element={authUser && authUser.role=='admin' ? <EditProduct /> : <Navigate to="/home" />} />
+      <Route path="/delete-product" element={authUser && authUser.role=='admin' ? <DeleteProduct /> : <Navigate to="/home" />} />
       
      
       {/* <Route path="/view-ordered-product" element={<DeleteProduct />} />
@@ -71,11 +62,11 @@ function App() {
       {/* <Route path="/delete-customer" element={<DeleteProduct />} /> */}
       <Route path="/show-product" element={<ShowProduct />} />
 
-      <Route path="/show-order" element={<ShowOrders />} />
+      <Route path="/show-order" element={authUser ? <ShowOrders /> :  <Navigate to="/home" />} />
 
-      <Route path="/place-order" element={<PlaceOrder />} />
-      <Route path="/cancel-order" element={<CancelOrder />} />
-      <Route path="/admin-home" element={<AdminHome />} /> 
+      <Route path="/place-order" element={authUser ?<PlaceOrder /> : <Navigate to="/home" />} />
+      <Route path="/cancel-order" element={authUser ? <CancelOrder /> : <Navigate to="/home" />} />
+      <Route path="/admin-home" element={(authUser && authUser.role=='admin' ) ? <AdminHome />: <Navigate to={"/login"} />} /> 
       <Route path="/profile" element={<Profile />} />
       </Routes>
       <Toaster />
