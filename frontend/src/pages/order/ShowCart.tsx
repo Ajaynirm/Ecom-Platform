@@ -16,7 +16,7 @@ function ShowCart() {
   const navigate = useNavigate();
   const { cart, setCart, authUser, setTotalCartPrice } = useAuthStore();
   const [totalPrice, setTotalPrice] = useState(0);
-  const [orderPlaced, setOrderPlaced] = useState(false);
+  // const [orderPlaced, setOrderPlaced] = useState(false);
   const cartItems = cart;
   useEffect(() => {
     const fetchCart = async () => {
