@@ -33,28 +33,38 @@ const HomePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [searchWord, setSearchWord] = useState(" ");
+  const [searchWord, setSearchWord] = useState("");
+  const [searchInput,setSearchInput]=useState("");
+
   // const searchInputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState(
     `https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`
   );
 
   useEffect(() => {
+    if(searchWord==="") return;
+
     const searchProduct = async (): Promise<void> => {
       try {
+        console.log("search effect running ")
         const response = await axiosInstance.get("/products/search", {
           params: { page, limit, searchWord },
         });
         console.log(response.data);
+        setProducts(response.data.products);
+        setTotalPages(response.data.totalPages);
+        setResData(response);
       } catch (e) {
         console.error("Error in fetching searched products:", e);
       }
     };
     searchProduct();
   }, [searchWord]);
+
   useEffect(() => {
     const getAllProduct = async (): Promise<void> => {
       try {
+        console.log("get product effect running ")
         const response = await axiosInstance.get("/products/list-product", {
           params: { page, limit },
         });
@@ -86,12 +96,23 @@ const HomePage: React.FC = () => {
           // ref={searchInputRef}
           type="text"
           placeholder="Search..."
-          value={searchWord}
+          value={searchInput}
           onChange={(e) => {
-            setSearchWord(e.target.value);
+            setSearchInput(e.target.value);
           }}
           className="flex-1 bg-transparent px-2 py-1 outline-none"
         />
+        <button 
+         className={`ml-2 px-3 py-1 rounded transition 
+          ${searchInput.trim() === "" 
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed" 
+            : "bg-blue-500 hover:bg-blue-600 cursor-default text-white"}
+        `}
+        disabled={searchInput.trim() === ""}
+        onClick={()=>{
+          setSearchWord(searchInput)
+        }}
+        >click</button>
       </div>
 
       <h1 className="text-3xl font-bold mb-6 text-center">Our Products</h1>

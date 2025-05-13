@@ -19,6 +19,12 @@
 1. **MySQL** for RDBMS - mainly for maintaining relationship between tables using Normalisation.
 
 ---
+### Admin Login credentials for demo:
+---
+**email : cyber@gmail.com**
+---
+**password : 1234567**
+---
 
 ### 🧩 Variable	                 📝 Description
 ** PORT = 11000**

@@ -117,7 +117,6 @@ export const getOneProductDetails = async (req, res) => {
 // GET /api/products/search
 export const searchProduct = async (req, res) => {
   const { searchWord } = req.query;
-  console.log(searchWord);
   let { page = 1, limit = 10 } = req.query;
   page = parseInt(page);
   limit = parseInt(limit);
