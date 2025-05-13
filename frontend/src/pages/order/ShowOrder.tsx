@@ -51,9 +51,9 @@ const ShowOrders = () => {
         <p className="text-center text-gray-500">No orders found</p>
       ) : (
         <ul className="space-y-6">
-          {orders.map((order) => (
+          {orders.map((order,ind) => (
             <li
-              key={order.order_id}
+              key={ind}
               className="bg-white shadow-md rounded-lg p-4"
             >
               <div className="flex justify-between items-center">

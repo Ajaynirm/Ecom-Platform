@@ -8,6 +8,7 @@ export default function PlaceOrder() {
   const { authUser, cart, setCart, totalCartPrice } = useAuthStore();
   const [confirmationText, setConfirmationText] = useState("");
   const [isPlaced, setIsPlaced] = useState(false);
+  const [res,setRes]=useState({order_id:-1});
 
   const deleteCart = async () => {
     try {
@@ -31,6 +32,7 @@ export default function PlaceOrder() {
       if (response.data) {
         console.log(response.data);
         console.log("Order placed");
+        setRes(response.data)
         setIsPlaced(true);
         setCart([]);
       }
@@ -78,6 +80,7 @@ export default function PlaceOrder() {
             <p className="text-green-600 font-semibold text-center">
               Order has been successfully placed.
             </p>
+            <p>Your Order id is : {res.order_id}</p>
             <button
               className="p-4 btn text-blue-600 font-semibold text-center border-amber-300 rounded-2xl"
               onClick={() => {

@@ -13,6 +13,10 @@ const ShowProduct = () => {
   const product = currProduct;
 
   const handleSetCart = async () => {
+    if(!authUser){
+      toast.error("Login first to use Cart");
+      return;
+    }
     try {
       const response = await axiosInstance.post("/cart/update-cart", {
         customer_id: authUser?.id,
