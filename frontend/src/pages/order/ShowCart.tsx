@@ -52,11 +52,11 @@ function ShowCart() {
     setTotalCartPrice(tp);
   }, [totalPrice]);
 
-  const handlePlaceOrder = () => {
-    console.log("Order placed with items:", cartItems);
-    setCart([]);
-    setOrderPlaced(true);
-  };
+  // const handlePlaceOrder = () => {
+  //   console.log("Order placed with items:", cartItems);
+  //   setCart([]);
+  //   setOrderPlaced(true);
+  // };
 
   const increaseQty = (id: number) => {
     const updatedCart = cart.map((item) =>
