@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/AuthStore.js";
 import { toast } from "react-hot-toast";
@@ -19,8 +18,8 @@ const DeleteProduct = () => {
         }
       );
       navigate("/admin-home");
-    } catch (err) {
-      console.error("Delete failed:", err);
+    } catch (err: any) {
+      toast.error("product Delete failed:", err);
     }
   };
 

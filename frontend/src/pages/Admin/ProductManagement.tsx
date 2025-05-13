@@ -14,25 +14,22 @@ const ProductManagement: React.FC = () => {
   const { setCurrProduct } = useAuthStore();
 
   const navigate = useNavigate();
-  const [resData, setResData] = useState(Object);
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchWord, setSearchWord] = useState(" ");
+  // const [searchWord, setSearchWord] = useState(" ");
 
   useEffect(() => {
     const getAllProduct = async (): Promise<void> => {
       try {
         const response = await axiosInstance.get("/products/list-product", {
-          params: { page, limit },
+          params: { page, limit:10 },
         });
         // const data = await response.json();
         console.log(response.data);
         setProducts(response.data.products);
         setTotalPages(response.data.totalPages);
-        setResData(response);
       } catch (error) {
         console.error("Error fetching products:", error);
       }

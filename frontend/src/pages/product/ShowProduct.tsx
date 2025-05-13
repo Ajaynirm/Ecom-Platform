@@ -1,5 +1,3 @@
-// ProductDetail.tsx
-import { useParams } from "react-router-dom";
 import { useAuthStore } from "../../store/AuthStore";
 import { axiosInstance } from "../../lib/axios";
 import { useNavigate } from "react-router-dom";

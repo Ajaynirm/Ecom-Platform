@@ -1,9 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.ts";
 import toast from "react-hot-toast";
-import { data } from "react-router-dom";
 
-// const navigate=useNavigate();
 
 type Product = {
   id: number;
@@ -12,15 +10,7 @@ type Product = {
   price: number;
   stock_quantity: number;
 };
-type CartItem = {
-  id: number;
-  quantity: number;
-  product_id: number;
-  name: string;
-  description: string;
-  price: number;
-  stock_quantity: number;
-};
+
 
 // Define the shape of the auth state
 interface AuthState {

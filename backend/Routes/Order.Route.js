@@ -8,14 +8,19 @@ import {
   listAllOrder,
   getOrders,
 } from "../Controller/Order.Controller.js";
+import { protectRoute } from "../middleware/Auth.Middleware.js";
+import { protectadminRoute } from "../middleware/Admin.Auth.middleware.js";
+
 const router = Router();
 
-router.post("/place-order", placeOrder);
-router.get("/order-detail", viewOrder);
-router.get("/group-order", groupOrder);
-router.get("/filter-order", filterOrder);
-router.delete("/delete-order", deleteOrder);
-router.get("/list-order", listAllOrder);
-router.get("/get-order", getOrders);
+router.post("/place-order", protectRoute, placeOrder);
+router.get("/order-detail", protectRoute, viewOrder);
+router.delete("/delete-order", protectRoute, deleteOrder);
+
+router.get("/group-order", protectadminRoute, groupOrder);
+router.get("/filter-order", protectadminRoute, filterOrder);
+
+router.get("/list-order",protectadminRoute, listAllOrder);
+router.get("/get-order",protectRoute, getOrders);
 
 export default router;

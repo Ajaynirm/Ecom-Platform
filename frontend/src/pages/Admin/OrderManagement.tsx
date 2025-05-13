@@ -7,24 +7,22 @@ const OrderManagement: React.FC = () => {
   const navigate = useNavigate();
   const { setCurrOrder } = useAuthStore();
 
-  const [resData, setResData] = useState(Object);
+
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchWord, setSearchWord] = useState(" ");
+  // const [searchWord, setSearchWord] = useState(" ");
 
   useEffect(() => {
     const getAllOrder = async (): Promise<void> => {
       try {
         const response = await axiosInstance.get("/order/list-order", {
-          params: { page, limit },
+          params: { page, limit:10 },
         });
         console.log(response.data);
         setOrders(response.data.orders);
         setTotalPages(response.data.totalPages);
-        setResData(response);
       } catch (error) {
         console.error("Error fetching products:", error);
       }

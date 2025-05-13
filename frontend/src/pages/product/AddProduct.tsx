@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const AddProduct = () => {
         toast.success("Product added successfully");
       }
     } catch (e) {
-      toast.error("Error while adding laptop");
+      toast.error("Error while adding product");
     }
   };
 

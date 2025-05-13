@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { useAuthStore } from "../../store/AuthStore";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,6 @@ type Product = {
   price: number;
   stock: number;
 };
-interface ResData {
-  success: boolean;
-  limit: number;
-  totalProducts: number;
-  totalPages: number;
-  products: [];
-}
 
 const HomePage: React.FC = () => {
   const { setCurrProduct } = useAuthStore();
@@ -28,7 +21,6 @@ const HomePage: React.FC = () => {
 
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
 
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,9 +29,9 @@ const HomePage: React.FC = () => {
   const [searchInput,setSearchInput]=useState("");
 
   // const searchInputRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState(
+  const image=
     `https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`
-  );
+  ;
 
   useEffect(() => {
     if(searchWord==="") return;
@@ -48,7 +40,7 @@ const HomePage: React.FC = () => {
       try {
         console.log("search effect running ")
         const response = await axiosInstance.get("/products/search", {
-          params: { page, limit, searchWord },
+          params: { page, limit:10, searchWord },
         });
         console.log(response.data);
         setProducts(response.data.products);
@@ -66,7 +58,7 @@ const HomePage: React.FC = () => {
       try {
         console.log("get product effect running ")
         const response = await axiosInstance.get("/products/list-product", {
-          params: { page, limit },
+          params: { page, limit:10 },
         });
         // const data = await response.json();
         console.log(response.data);

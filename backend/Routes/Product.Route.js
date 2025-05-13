@@ -7,16 +7,16 @@ import {
   listAllProduct,
   searchProduct,
 } from "../Controller/Product.Controller.js";
-import { protectRoute } from "../middleware/Auth.Middleware.js";
+import { protectadminRoute } from "../middleware/Admin.Auth.middleware.js";
 const router = Router();
 
-router.post("/create-product", createProduct);
+router.post("/create-product", protectadminRoute,createProduct);
 //PUT /api/products/:id
-router.put("/update/:id", updateProduct);
+router.put("/update/:id", protectadminRoute,updateProduct);
 //DELETE /api/products/:id
-router.delete("/delete/:id", deleteProduct);
+router.delete("/delete/:id", protectadminRoute, deleteProduct);
 //GET /api/products/:id
-router.get("/detail/:id", getOneProductDetails);
+router.get("/detail/:id", protectadminRoute,getOneProductDetails);
 //GET /api/products?page=1&limit=10
 //GET /api/products?name=mouse&minPrice=100&maxPrice=300
 //GET /api/products?groupBy=stock_quantity

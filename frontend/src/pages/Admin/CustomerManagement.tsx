@@ -14,26 +14,22 @@ interface Customer {
 const CustomerManagement: React.FC = () => {
   const navigate = useNavigate();
   const { setCurrCustomer } = useAuthStore();
-
-  const [resData, setResData] = useState(Object);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchWord, setSearchWord] = useState(" ");
+  // const [searchWord, setSearchWord] = useState("");
 
   useEffect(() => {
     const getAllCustomer = async (): Promise<void> => {
       try {
         const response = await axiosInstance.get("/admin/getCustomer", {
-          params: { page, limit },
+          params: { page, limit:10 },
         });
         // const data = await response.json();
         console.log(response.data);
         setCustomers(response.data.customers);
         setTotalPages(response.data.totalPages);
-        setResData(response);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
