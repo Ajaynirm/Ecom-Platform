@@ -23,7 +23,7 @@ interface AuthState {
   currProduct: Product | null;
   currCustomer: object | null;
   currOrder: object | null;
-  cart: string;
+  cart: [];
   tab: string;
   setTab: (data: string) => void;
   setTotalCartPrice: (price: number) => void;

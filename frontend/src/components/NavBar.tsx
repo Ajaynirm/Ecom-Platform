@@ -15,7 +15,6 @@ const Navbar = () => {
   const { authUser, logout } = useAuthStore();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const image = `https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png`;
 
   return (
     <nav className="w-full bg-white shadow-md px-4 py-3">
