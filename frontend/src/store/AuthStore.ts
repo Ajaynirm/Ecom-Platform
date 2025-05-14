@@ -3,18 +3,19 @@ import { axiosInstance } from "../lib/axios.ts";
 import toast from "react-hot-toast";
 
 
-type Product = {
+interface Product {
   id: number;
   name: string;
+  product_id: number;
   description: string;
   price: number;
   stock_quantity: number;
 };
 
 
-// Define the shape of the auth state
+
 interface AuthState {
-  authUser: any; // You can replace `any` with a proper user type
+  authUser: any; 
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
@@ -22,7 +23,7 @@ interface AuthState {
   currProduct: Product | null;
   currCustomer: object | null;
   currOrder: object | null;
-  cart: Product[];
+  cart: string;
   tab: string;
   setTab: (data: string) => void;
   setTotalCartPrice: (price: number) => void;
@@ -44,6 +45,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   currProduct: null,
   totalCartPrice: 0,
   cart: [],
+  checkAuth: async () => {
+    try {
+      set({isCheckingAuth: true});
+      const res = await axiosInstance("/auth/check");
+      set({ authUser: res.data });
+      
+    } catch (e) {
+      set({ authUser: null });
+    } finally{
+      set({isCheckingAuth: false})
+    }
+  },
   setCurrProduct: (data: any) => {
     set({ currProduct: data });
   },
@@ -71,19 +84,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setTab: (tab: string) => {
     set({ tab: tab });
   },
-  checkAuth: async () => {
-    try {
-      const res = await axiosInstance.get("/auth/login");
-
-      set({ authUser: res.data });
-    } catch (error) {
-      console.log("Error in checkAuth:", error);
-      set({ authUser: null });
-    } finally {
-      set({ isCheckingAuth: false });
-    }
-  },
-
+ 
   signup: async (data: any) => {
     set({ isSigningUp: true });
     try {

@@ -18,7 +18,12 @@ const pool = createPool({
     console.log("Connected to MySQL database!");
     connection.release();
 
-    const schema = `CREATE TABLE IF NOT EXISTS Customers (
+    const schema = `
+        CREATE DATABASE IF NOT EXISTS Ecommerce_database;
+
+        USE Ecommerce_database;
+        
+        CREATE TABLE IF NOT EXISTS Customers (
         id INT AUTO_INCREMENT PRIMARY KEY,
         email VARCHAR(255) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,

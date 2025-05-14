@@ -49,8 +49,8 @@ const CustomerManagement: React.FC = () => {
                 "ID",
                 "First Name",
                 "Last Name",
+                "Email",
                 "Created at",
-                "Total Orders",
                 "View Orders",
                 "Delete",
               ].map((title, idx) => (
@@ -88,7 +88,7 @@ const CustomerManagement: React.FC = () => {
                   }}
                 >
                   <button className="bg-blue-600 text-amber-50 p-2 rounded-xl">
-                    view Order
+                    view order
                   </button>
                 </td>
                 <td

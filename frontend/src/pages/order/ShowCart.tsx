@@ -11,13 +11,23 @@ type ApiCartItem = {
   price: number;
   quantity: number;
 };
-
+type Product = {
+  id: number;
+  product_id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock_quantity: number;
+};
 function ShowCart() {
   const navigate = useNavigate();
-  const { cart, setCart, authUser, setTotalCartPrice } = useAuthStore();
+  const { authUser,setTotalCartPrice} = useAuthStore();
   const [totalPrice, setTotalPrice] = useState(0);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const cartItems = cart;
+  const [cart,setCart]=useState<Product[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+
   useEffect(() => {
     const fetchCart = async () => {
       if (!authUser?.id) return;
@@ -33,7 +43,12 @@ function ShowCart() {
           ...item,
           stock_quantity: item.quantity,
         }));
-
+        const tp = mapped.reduce(
+          (sum, item) => sum + item.price * item.stock_quantity,
+          0
+        );
+        setTotalPrice(tp);
+        setTotalCartPrice(tp);
         setCart(mapped);
       } catch (err) {
         console.error("Failed to fetch cart", err);
@@ -41,19 +56,18 @@ function ShowCart() {
     };
 
     fetchCart();
-  }, [authUser?.id, setCart]);
+  }, [authUser?.id, refreshTrigger]);
 
-  useEffect(() => {
-    const tp = cartItems.reduce(
-      (sum, item) => sum + item.price * item.stock_quantity,
-      0
-    );
-    setTotalPrice(tp);
-    setTotalCartPrice(tp);
-  }, [totalPrice]);
+  // useEffect(() => {
+  //   const tp = cart.reduce(
+  //     (sum, item) => sum + item.price * item.stock_quantity,
+  //     0
+  //   );
+  //   setTotalCartPrice(tp);
+  // }, [totalPrice]);
 
   // const handlePlaceOrder = () => {
-  //   console.log("Order placed with items:", cartItems);
+  //   console.log("Order placed with items:", cart);
   //   setCart([]);
   //   setOrderPlaced(true);
   // };
@@ -76,9 +90,20 @@ function ShowCart() {
     setCart(updatedCart);
   };
 
-  const removeItem = (id: number) => {
-    const updatedCart = cart.filter((item) => item.id !== id);
-    setCart(updatedCart);
+  const handleRemoveItem = async (id: number) => {
+    try {
+      console.log(cart,authUser.id,id);
+      const res=await axiosInstance.delete("/cart/delete-one-product",
+        {params: {customer_id: authUser.id, product_id: id}}
+      )
+      console.log(res);
+      setRefreshTrigger(1);
+ 
+      // setCart();
+
+    } catch (error) {
+      console.log(error)
+    } 
   };
 
   return (
@@ -86,12 +111,12 @@ function ShowCart() {
       <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-2xl">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Your Cart</h2>
 
-        {cartItems.length === 0 ? (
+        {cart.length === 0 ? (
           <p className="text-gray-500">Your cart is empty.</p>
         ) : (
           <>
             <ul className="divide-y divide-gray-200 mb-4">
-              {cartItems.map((item) => (
+              {cart.map((item) => (
                 <li
                   key={item.id}
                   className="py-4 flex justify-between items-center"
@@ -121,7 +146,7 @@ function ShowCart() {
                     </p>
                     <button
                       className="text-red-500 text-sm mt-1 hover:underline"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => handleRemoveItem(item.product_id)}
                     >
                       Remove
                     </button>

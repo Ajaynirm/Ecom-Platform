@@ -5,115 +5,113 @@ import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const { login, isLoggingIn } = useAuthStore();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(formData);
   };
+
   if (isLoggingIn) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader2 className="size-10 animate-spin" />
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
   }
+
   return (
-    <div className="h-screen border-black">
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8 bg-gray-200  font-bold p-6 shadow-lg rounded-lg">
-          <div className="text-center mb-8 ">
-            <div className="flex flex-col items-center gap-2 group">
-              <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-base-content/60">Sign in to your account</p>
-            </div>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label ">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <div className="relative h-10">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none ">
-                  <Mail className="h-5 w-5 text-base-content/40" />
-                </div>
-                <input
-                  type="email"
-                  className={`input input-bordered w-full pl-15 h-10`}
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-base-content/40" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10 h-10`}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary w-full h-22"
-              disabled={isLoggingIn}
-            >
-              {isLoggingIn ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Loading...
-                </>
-              ) : (
-                "Sign in"
-              )}
-            </button>
-          </form>
-
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Don&apos;t have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Create account
-              </Link>
-            </p>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-semibold text-gray-800">Welcome Back</h1>
+          <p className="text-gray-500 mt-2">Sign in to your account</p>
         </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                type="email"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full pl-10 pr-10 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-60 flex items-center justify-center gap-2"
+            disabled={isLoggingIn}
+          >
+            {isLoggingIn ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              <span>Sign in</span>
+            )}
+          </button>
+        </form>
+
+        {/* Bottom link */}
+        <p className="text-sm text-gray-600 text-center mt-6">
+          Don&apos;t have an account?{" "}
+          <Link
+            to="/signup"
+            className="text-primary hover:underline font-medium"
+          >
+            Create account
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
+
 export default LoginPage;
+
+

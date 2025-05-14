@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 //dummy image for all products
-const image = `https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`;
+const image = `https://media.istockphoto.com/id/1249219777/photo/shopping-online-concept-parcel-or-paper-cartons-with-a-shopping-cart-logo-in-a-trolley-on-a.jpg?s=612x612&w=0&k=20&c=EWKEahyVLY8iAHyirCCDESHRGW37lqUJ7In0SssNSLE=`;
 
 const ShowProduct = () => {
   const navigate = useNavigate();
@@ -13,12 +13,12 @@ const ShowProduct = () => {
   const product = currProduct;
 
   const handleSetCart = async () => {
-    if(!authUser){
+    if (!authUser) {
       toast.error("Login first to use Cart");
       return;
     }
     try {
-      const response = await axiosInstance.post("/cart/update-cart", {
+      const response = await axiosInstance.patch("/cart/update-cart", {
         customer_id: authUser?.id,
         product_id: product?.id,
         quantity: 1,

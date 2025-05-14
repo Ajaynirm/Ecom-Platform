@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/AuthStore.js";
-import {
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-  User,
-} from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, User } from "lucide-react";
 import { Link } from "react-router-dom";
-
 import toast from "react-hot-toast";
 
 const SignUpPage = () => {
@@ -25,157 +17,127 @@ const SignUpPage = () => {
 
   const validateForm = () => {
     if (!formData.first_name.trim())
-      return toast.error("Full name is required");
+      return toast.error("First name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
     if (!/\S+@\S+\.\S+/.test(formData.email))
       return toast.error("Invalid email format");
     if (!formData.password) return toast.error("Password is required");
     if (formData.password.length < 6)
       return toast.error("Password must be at least 6 characters");
-
     return true;
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const success = validateForm();
-
-    if (success === true) signup(formData);
+    if (validateForm() === true) signup(formData);
   };
 
   return (
-    <div className="h-screen border-black">
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="-full max-w-md space-y-8 bg-gray-200  font-bold p-12 shadow-lg rounded-lg">
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <h1 className="text-2xl font-bold mt-2">Create Account</h1>
-              <p className="text-base-content/60">
-                Get started with your free account
-              </p>
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">First Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="text"
-                  className={`input input-bordered w-full pl-10 h-10`}
-                  placeholder="Vyomika"
-                  value={formData.first_name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, first_name: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Last Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="text"
-                  className={`input input-bordered w-full pl-10 h-10`}
-                  placeholder="sofiya"
-                  value={formData.last_name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, last_name: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="email"
-                  className={`input input-bordered w-full pl-10 h-10`}
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10 h-10`}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="size-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="size-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-              disabled={isSigningUp}
-            >
-              {isSigningUp ? (
-                <>
-                  <Loader2 className="size-5 animate-spin" />
-                  Loading...
-                </>
-              ) : (
-                "Create Account"
-              )}
-            </button>
-          </form>
-
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Already have an account?{" "}
-              <Link to="/login" className="link link-primary">
-                Sign in
-              </Link>
-            </p>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-semibold text-gray-800">Create Account</h1>
+          <p className="text-gray-500 mt-2">Get started with your free account</p>
         </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* First Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <div className="relative">
+              <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                placeholder="Vyomika"
+                value={formData.first_name}
+                onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Last Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <div className="relative">
+              <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                placeholder="Sofiya"
+                value={formData.last_name}
+                onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                type="email"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full pl-10 pr-10 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-60 flex items-center justify-center gap-2"
+            disabled={isSigningUp}
+          >
+            {isSigningUp ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Signing up...
+              </>
+            ) : (
+              <span>Create Account</span>
+            )}
+          </button>
+        </form>
+
+        <p className="text-sm text-gray-600 text-center mt-6">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline font-medium">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
+
 export default SignUpPage;
+

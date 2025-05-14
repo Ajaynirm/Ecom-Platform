@@ -37,6 +37,7 @@ const ShowOrders = () => {
       <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
         Your Orders
       </h2>
+      {orders.length >= 6 ?
       <div className="flex flex-row justify-center items-center bg-amber-300 p-4 m-4 rounded-2xl border-2">
         <button
           onClick={() => {
@@ -46,6 +47,10 @@ const ShowOrders = () => {
           Back to Home
         </button>
       </div>
+      : <>
+         {/* <div></div>  empty */}
+      </>
+}
 
       {orders.length === 0 ? (
         <p className="text-center text-gray-500">No orders found</p>

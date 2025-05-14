@@ -28,52 +28,74 @@ export const getUserCart = async (req, res) => {
   }
 };
 
-//post
+//put
 export const updateUserCart = async (req, res) => {
-  const { customer_id, product_id, quantity } = req.body;
+  
+  try {
+    const { customer_id, product_id, quantity } = req.body;
 
-  // Check if the item exists
-  const [existing] = await pool.query(
-    `SELECT * FROM Cart_Items WHERE customer_id = ? AND product_id = ?`,
-    [customer_id, product_id]
-  );
+    // Validate inputs
+    if (!customer_id || !product_id || quantity == null) {
+      return res.status(400).json({ error: "Missing required query parameters." });
+    }
 
-  if (existing.length > 0) {
-    // Update quantity
-    await pool.query(
-      `UPDATE Cart_Items SET quantity = quantity + ? WHERE customer_id = ? AND product_id = ?`,
-      [quantity, customer_id, product_id]
+    const parsedQuantity = parseInt(quantity, 10);
+    if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+      return res.status(400).json({ error: "Quantity must be a positive number." });
+    }
+
+    // Check if item already exists in the cart
+    const [existing] = await pool.query(
+      `SELECT * FROM Cart_Items WHERE customer_id = ? AND product_id = ?`,
+      [customer_id, product_id]
     );
-  } else {
-    // Insert new
-    await pool.query(
-      `INSERT INTO Cart_Items (customer_id, product_id, quantity) VALUES (?, ?, ?)`,
-      [customer_id, product_id, quantity]
-    );
+
+    if (existing.length > 0) {
+      // Update quantity
+      await pool.query(
+        `UPDATE Cart_Items SET quantity = quantity + ? WHERE customer_id = ? AND product_id = ?`,
+        [parsedQuantity, customer_id, product_id]
+      );
+    } else {
+      // Insert new cart item
+      await pool.query(
+        `INSERT INTO Cart_Items (customer_id, product_id, quantity) VALUES (?, ?, ?)`,
+        [customer_id, product_id, parsedQuantity]
+      );
+    }
+
+    res.status(200).json({ success: true, message: "Cart updated successfully." });
+  } catch (err) {
+    console.error("Error updating cart:", err);
+    res.status(500).json({ error: "Internal server error." });
   }
-
-  res.json({ success: true });
 };
 
 //patch
 export const modifyQuantityInCart = async (req, res) => {
   const { customer_id, product_id, quantity } = req.body;
 
-  await pool.query(
+  const [row] = await pool.query(
     `UPDATE Cart_Items SET quantity = ? WHERE customer_id = ? AND product_id = ?`,
     [quantity, customer_id, product_id]
   );
 
+  console.log("modified cart quantity ",row);
+
   res.json({ success: true });
 };
+
+
+
 // delete
 export const RemoveItemInCart = async (req, res) => {
-  const { customer_id, product_id } = req.body;
+  const { customer_id, product_id } = req.query;
 
-  await pool.query(
+  const [row] = await pool.query(
     `DELETE FROM Cart_Items WHERE customer_id = ? AND product_id = ?`,
     [customer_id, product_id]
   );
+  console.log("deleted cart ",row);
 
   res.json({ success: true });
 };

@@ -82,7 +82,7 @@ const OrderManagement: React.FC = () => {
                   }}
                 >
                   <button className="bg-blue-600 text-amber-50 p-2 rounded-xl">
-                    view Order
+                    view order
                   </button>
                 </td>
                 <td

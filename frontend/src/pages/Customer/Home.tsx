@@ -30,7 +30,7 @@ const HomePage: React.FC = () => {
 
   // const searchInputRef = useRef<HTMLInputElement>(null);
   const image=
-    `https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`
+    `https://media.istockphoto.com/id/1249219777/photo/shopping-online-concept-parcel-or-paper-cartons-with-a-shopping-cart-logo-in-a-trolley-on-a.jpg?s=612x612&w=0&k=20&c=EWKEahyVLY8iAHyirCCDESHRGW37lqUJ7In0SssNSLE=`
   ;
 
   useEffect(() => {

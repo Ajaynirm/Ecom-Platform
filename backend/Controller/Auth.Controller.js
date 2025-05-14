@@ -33,19 +33,19 @@ export const signup = async (req, res) => {
     let result;
 
     if (role === "admin") {
-      const [res] = await pool.query(
+      const [row] = await pool.query(
         `INSERT INTO Customers (first_name, last_name, email, password_hash, created_at, updated_at,role)
          VALUES (?, ?, ?, ?, NOW(), NOW(), ?)`,
         [first_name, last_name, email, hashedPassword, role]
       );
-      result = res;
+      result = row;
     } else {
-      [res] = await pool.query(
+      const [row] = await pool.query(
         `INSERT INTO Customers (first_name, last_name, email, password_hash, created_at, updated_at)
          VALUES (?, ?, ?, ?, NOW(), NOW())`,
         [first_name, last_name, email, hashedPassword]
       );
-      result = res;
+      result = row;
     }
 
     const userId = result.insertId;

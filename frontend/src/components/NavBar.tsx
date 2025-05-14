@@ -51,11 +51,11 @@ const Navbar = () => {
                 >
                   Logout
                 </button>
-                <img
-                  src={image}
-                  alt={"pic"}
-                  className="w-8 h-8 rounded-full border border-gray-300"
-                />
+                {authUser.role==='admin' ?<div className="bg-amber-400 border-amber-400 rounded-2xl p-2 cursor-alias">Admin - {authUser.first_name}</div> :
+                  <div className="bg-amber-400 border-amber-400 rounded-2xl p-2 cursor-alias">{authUser.first_name}</div>
+                }
+                
+                
               </>
             ) : (
               <button

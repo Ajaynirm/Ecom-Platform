@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { useAuthStore } from "../../store/AuthStore";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,27 @@ export default function PlaceOrder() {
   const [isPlaced, setIsPlaced] = useState(false);
   const [res,setRes]=useState({order_id:-1});
 
+useEffect(()=>{
+  const fetchCart = async ()=>{
+    try {
+      const response = await axiosInstance.get(`/cart/get-cart`, {
+        params: {
+          customer_id: authUser.id,
+        },
+      });
+      console.log(response.data);
+      const mapped = (response.data as any).map((item: any) => ({
+        ...item,
+        stock_quantity: item.quantity,
+      }));
+      setCart(mapped);
+    } catch (err) {
+      console.error("Failed to fetch cart", err);
+    }
+  }
+  fetchCart()
+},[totalCartPrice])
+
   const deleteCart = async () => {
     try {
       const response = await axiosInstance.delete("/cart/delete-cart", {
@@ -20,6 +41,7 @@ export default function PlaceOrder() {
       console.log("Error deleting cart:", error.response || error.message);
     }
   };
+
   const handlePlaceOrder = async () => {
     console.log(authUser.id, totalCartPrice, cart);
     try {
